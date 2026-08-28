@@ -472,7 +472,31 @@ html.is-modal-open { overflow: hidden; }
 .modal_done-actions { display: flex; flex-wrap: wrap; gap: .625rem; justify-content: center; }
 
 @media screen and (max-width: 767px) {
-  .footer_contact-actions { justify-content: flex-start; }
+  /* chips back into flow: the wordmark fills the block at this width, so
+     there is no negative space to sit in and absolute offsets land on the
+     type instead */
+  .footer_contact-actions {
+    position: static;
+    display: flex;
+    width: 100%;
+    margin-top: 1.25rem;
+    margin-bottom: calc(var(--rx-totop-size, 3rem) + 2.5rem);
+    gap: .625rem;
+    justify-content: stretch;
+  }
+  .footer_contact-actions .contact-chip {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: .8rem .5rem;
+    gap: .375rem;
+    font-size: calc(var(--rx-size-footer-link, 1rem) * var(--rx-footer-chips-scale-sm, 1.05));
+    white-space: nowrap;
+  }
+  .footer_contact-actions .contact-chip_icon {
+    width: calc(1.125rem * var(--rx-footer-chips-scale-sm, 1.05));
+    height: calc(1.125rem * var(--rx-footer-chips-scale-sm, 1.05));
+  }
+  .text-wrap.is-footer { flex-direction: column; align-items: stretch; }
   .slot { flex: 1 1 100%; text-align: center; }
 }
 

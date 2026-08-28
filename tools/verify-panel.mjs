@@ -244,6 +244,7 @@ const MOBILE_ONLY = {
   '--card-scrim-top-sm':    ['.card_photo.is-back-neck', 'background', '0.95', '::after'],
   '--card-scrim-mid-sm':    ['.card_photo.is-back-neck', 'background', '0.95', '::after'],
   '--card-scrim-bottom-sm': ['.card_photo.is-back-neck', 'background', '0.05', '::after'],
+  '--rx-footer-chips-scale-sm': ['.footer_contact-actions .contact-chip', 'fontSize', '1.9'],
 };
 {
   for (const id of Object.keys(MOBILE_ONLY)) {

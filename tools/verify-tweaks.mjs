@@ -25,7 +25,9 @@ const p = await b.newPage();
 await p.init();
 await p.setViewport(1440, 900, 1);
 // no hash, no query: exactly what a visitor gets
-await p.goto('http://127.0.0.1:5178/', { waitMs: 4500 });
+const URL = process.argv[2] || 'http://127.0.0.1:5178/';
+await p.goto(URL, { waitMs: 4500 });
+console.log('checking ' + URL);
 await sleep(2000);
 
 const got = JSON.parse(await p.eval(`JSON.stringify((() => {

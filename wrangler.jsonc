@@ -1,0 +1,34 @@
+{
+  // Cloudflare Workers static-assets config.
+  //
+  // The deploy MUST serve site/dist, not site/. Serving the source tree
+  // breaks the page in two ways:
+  //
+  //   1. The direction stylesheet 404s. index.html inlines a loader that
+  //      appends "remix/tokens.<slug>.css". Vite copies site/public/* to
+  //      the dist root, so that path resolves after a build. In the raw
+  //      tree the file is at site/public/remix/..., the request 404s, no
+  //      direction tokens apply, and the page renders base defaults —
+  //      every palette, glass and photo value silently reverts.
+  //
+  //   2. The dev tweak panel ships. postbuild.mjs deletes dev-panel.js,
+  //      tweak-panel.js and panel.json from dist and asserts none survive.
+  //      Serving the source tree bypasses that entirely.
+  //
+  // Build command (set in the Cloudflare dashboard if Workers Builds does
+  // not pick up the `build` field below):
+  //
+  //   cd site && npm ci && npm run build
+  //
+  // Output directory: site/dist
+  "name": "re-active-hub",
+  "compatibility_date": "2026-08-28",
+  "assets": {
+    "directory": "./site/dist",
+    "not_found_handling": "single-page-application"
+  },
+  "build": {
+    "command": "npm ci && npm run build",
+    "cwd": "site"
+  }
+}

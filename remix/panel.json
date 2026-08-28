@@ -995,6 +995,16 @@
       "step": 0.05
     },
     {
+      "id": "--rx-footer-chips-scale-sm",
+      "label": "Footer chips scale · mobile",
+      "group": "Space",
+      "type": "number",
+      "default": 1.05,
+      "min": 0.8,
+      "max": 2,
+      "step": 0.05
+    },
+    {
       "id": "--rx-footer-chips-right",
       "label": "Footer chips inset",
       "group": "Space",
