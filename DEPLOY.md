@@ -4,14 +4,35 @@ The deploy must serve **`site/dist`**, never `site/`.
 
 ## Required settings
 
-| Setting | Value |
-|---|---|
-| Build command | `cd site && npm ci && npm run build` |
-| Build output directory | `site/dist` |
-| Root directory | repository root |
+The build is declared in `wrangler.jsonc` (`build.command`, `build.cwd`) and
+the assets directory in `assets.directory`. With that in place the dashboard
+needs **no** build command — the deploy command `npx wrangler deploy` runs the
+build itself, which is why the log shows `[custom build] Running: npm ci &&
+npm run build`.
 
-`wrangler.jsonc` declares the same thing. If Cloudflare Workers Builds is
-configured from the dashboard, the dashboard fields win — set them there too.
+| Dashboard setting | Value |
+|---|---|
+| Build command | *(none — wrangler.jsonc owns it)* |
+| Deploy command | `npx wrangler deploy` |
+| Root directory | `/` |
+
+If the dashboard does define a build command, it wins over the config file.
+
+## Two things that mislead you when a build fails
+
+**A failed build does not take the site down.** Cloudflare only swaps the live
+version when a build finishes cleanly; otherwise it keeps serving the last
+successful deployment. A red "failed" badge means the new attempt did not
+land, not that the site is broken. So "build failed but the site works" is
+the expected behaviour, not a puzzle.
+
+**"Retry deployment" replays the same commit.** It does not pick up newer
+commits. A fix pushed after a failure will not be in a retry of that
+failure — it needs a *new* deployment, either from the dashboard's create
+/ deploy action or triggered by a fresh push. A build that fails with an
+error you have already fixed is almost always a retry of the old commit;
+check the commit SHA at the top of the deployment against `git log -1`
+before re-diagnosing the error.
 
 ## Why it matters
 
