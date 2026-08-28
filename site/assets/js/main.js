@@ -77,11 +77,39 @@ document.querySelectorAll('[data-dropdown]').forEach((dd) => {
     toggle.setAttribute('aria-expanded', String(open));
   };
 
-  toggle.addEventListener('click', () => setOpen(dd.dataset.state !== 'open'));
-  dd.addEventListener('mouseenter', () => { if (matchMedia('(min-width: 992px)').matches) setOpen(true); });
-  dd.addEventListener('mouseleave', () => { if (matchMedia('(min-width: 992px)').matches) setOpen(false); });
-  document.addEventListener('click', (e) => { if (!dd.contains(e.target)) setOpen(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  /* Hover intent. Bare mouseenter/mouseleave opened and shut the panel on
+     every pass of the cursor, which is what made it feel twitchy. A short
+     open delay ignores a cursor merely crossing the word; a longer close
+     delay survives the diagonal trip down to the panel. */
+  const num = (name, fallback) => {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    const n = parseFloat(v);
+    return Number.isFinite(n) ? n : fallback;
+  };
+  const OPEN_DELAY = () => num('--nav-dd-open-delay', 90);
+  const CLOSE_DELAY = () => num('--nav-dd-close-delay', 280);
+  let timer = null;
+  const clear = () => { if (timer) { clearTimeout(timer); timer = null; } };
+  const desktop = () => matchMedia('(min-width: 992px)').matches;
+
+  toggle.addEventListener('click', () => { clear(); setOpen(dd.dataset.state !== 'open'); });
+  dd.addEventListener('mouseenter', () => {
+    if (!desktop()) return;
+    clear();
+    timer = setTimeout(() => setOpen(true), OPEN_DELAY());
+  });
+  dd.addEventListener('mouseleave', () => {
+    if (!desktop()) return;
+    clear();
+    timer = setTimeout(() => setOpen(false), CLOSE_DELAY());
+  });
+  // keyboard users get it without the delays
+  dd.addEventListener('focusin', () => { clear(); setOpen(true); });
+  dd.addEventListener('focusout', (e) => {
+    if (!dd.contains(e.relatedTarget)) { clear(); setOpen(false); }
+  });
+  document.addEventListener('click', (e) => { if (!dd.contains(e.target)) { clear(); setOpen(false); } });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { clear(); setOpen(false); toggle.focus(); } });
   addEventListener('resize', () => { if (dd.dataset.state === 'open') measure(); });
 });
 

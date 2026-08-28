@@ -32,12 +32,12 @@ ok('scroll reveals fire', rv.in === rv.total && rv.op === '1', rev);
 
 // --- 4. nav dropdown opens
 await p.eval(`window.scrollTo(0,0)`); await sleep(600);
-const ddBefore = await p.eval(`getComputedStyle(document.querySelector('.nav_link-dropdown')).display`);
+const ddBefore = await p.eval(`JSON.stringify({ vis: getComputedStyle(document.querySelector('.nav_link-dropdown')).visibility, navH: Math.round(document.querySelector('.navbar_content').getBoundingClientRect().height) })`);
 await p.eval(`document.querySelector('.nav_links.is-dropdown').click()`);
 await sleep(800);
-const ddAfter = await p.eval(`JSON.stringify({display:getComputedStyle(document.querySelector('.nav_link-dropdown')).display,h:document.querySelector('.nav_dropdown-wrap').getBoundingClientRect().height,aria:document.querySelector('.nav_links.is-dropdown').getAttribute('aria-expanded'),caret:getComputedStyle(document.querySelector('.nav_link-icon')).transform})`);
+const ddAfter = await p.eval(`JSON.stringify({ vis: getComputedStyle(document.querySelector('.nav_link-dropdown')).visibility, op: getComputedStyle(document.querySelector('.nav_link-dropdown')).opacity, navH: Math.round(document.querySelector('.navbar_content').getBoundingClientRect().height), aria: document.querySelector('.nav_links.is-dropdown').getAttribute('aria-expanded'), caret: getComputedStyle(document.querySelector('.nav_link-icon')).transform })`);
 const dd = JSON.parse(ddAfter);
-ok('nav dropdown opens', ddBefore === 'none' && dd.display !== 'none' && dd.h > 50, ddAfter);
+ok('nav dropdown opens without resizing the navbar', JSON.parse(ddBefore).vis === 'hidden' && dd.vis === 'visible' && +dd.op > 0.9 && dd.navH === JSON.parse(ddBefore).navH, ddAfter);
 
 // --- 5. button hover swap
 const bh = await p.eval(`JSON.stringify((()=>{const btn=document.querySelector('.hero-cta .button');const t1=btn.querySelector('.button-text.is-firts');const before=getComputedStyle(t1).transform;return {before};})())`);

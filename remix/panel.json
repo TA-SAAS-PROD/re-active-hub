@@ -710,6 +710,17 @@
       "unit": "%"
     },
     {
+      "id": "--g-tint-nav",
+      "label": "Glass tint · nav menu",
+      "group": "Glass",
+      "type": "length",
+      "default": "72%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
       "id": "--g-dark-ground",
       "label": "Dark section ground",
       "group": "Glass",
@@ -992,6 +1003,59 @@
       "min": 0,
       "max": 16,
       "step": 0.5,
+      "unit": "rem"
+    },
+    {
+      "id": "--nav-dd-dur",
+      "label": "Nav dropdown fade",
+      "group": "Motion",
+      "type": "length",
+      "default": "260ms",
+      "min": 0,
+      "max": 900,
+      "step": 20,
+      "unit": "ms"
+    },
+    {
+      "id": "--nav-dd-rise",
+      "label": "Nav dropdown rise",
+      "group": "Motion",
+      "type": "length",
+      "default": ".5rem",
+      "min": 0,
+      "max": 3,
+      "step": 0.125,
+      "unit": "rem"
+    },
+    {
+      "id": "--nav-dd-open-delay",
+      "label": "Nav hover-in delay",
+      "group": "Motion",
+      "type": "number",
+      "default": 90,
+      "min": 0,
+      "max": 600,
+      "step": 10
+    },
+    {
+      "id": "--nav-dd-close-delay",
+      "label": "Nav hover-out delay",
+      "group": "Motion",
+      "type": "number",
+      "default": 280,
+      "min": 0,
+      "max": 1200,
+      "step": 20
+    },
+    {
+      "id": "--nav-dd-offset",
+      "label": "Nav dropdown gap",
+      "group": "Space",
+      "type": "length",
+      "default": ".6rem",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
       "unit": "rem"
     }
   ]

@@ -55,6 +55,7 @@
   --g-tint-btn: 56%;        /* buttons, chips, monograms                  */
   --g-tint-btn-hero: 88%;   /* hero CTA: dark ink over a photograph      */
   --g-tint-btn-modal: 94%;  /* modal submit: cream label on a light panel */
+  --g-tint-nav: 72%;        /* nav dropdown: ink over any section     */
   --g-dark-ground: 82%;     /* how dark the two dark sections sit         */
 
   /* edge — upstream's symmetric double highlight, their `sm` step */
@@ -240,6 +241,7 @@ body {
 .icon-box               { background-color: color-mix(in srgb, var(--rx-solid) var(--g-tint-btn), transparent); }
 .author_img.is-monogram { background-color: color-mix(in srgb, var(--rx-accent) var(--g-tint-btn), transparent); }
 .hero-cta .button       { background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint-btn-hero), transparent); }
+.nav_dropdown-content   { background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint-nav), transparent); }
 .button.is-submit       { background-color: color-mix(in srgb, var(--rx-solid) var(--g-tint-btn-modal), transparent); }
 
 /* ---- the hero bar ----------------------------------------------------

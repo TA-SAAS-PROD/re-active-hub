@@ -558,3 +558,130 @@ html.is-modal-open { overflow: hidden; }
   .card_photo.is-posture   { --card-img: image-set(url("../img/cards/posture-560.jpg") 1x); }
   .card_photo.is-home      { --card-img: image-set(url("../img/cards/home-560.jpg") 1x); }
 }
+
+
+/* ==================================================================
+   NAV DROPDOWN — "Conditions"
+
+   Two things made this feel abrupt. The panel was position:static, so
+   opening it grew .navbar_content from 75px to 393px: the whole bar
+   inflated and snapped back. And it was toggled display:none -> block,
+   which cannot transition, so it popped rather than faded — the height
+   animation on .nav_dropdown-wrap was the only thing easing, and it was
+   easing a box that had already appeared.
+
+   Now the panel is taken out of flow and anchored under the navbar, and
+   it fades and rises. visibility (not display) is what makes that
+   possible; it is delayed on close so the fade finishes before the panel
+   leaves the accessibility tree.
+   ================================================================== */
+/* the nav has to out-rank the sections that follow it, or the panel opens
+   underneath the hero no matter what z-index it carries internally */
+.navbar {
+  position: relative;
+  z-index: var(--nav-z, 50);
+}
+
+.nav_link-dropdown {
+  display: block;
+  position: absolute;
+  top: calc(100% + var(--nav-dd-offset, .6rem));
+  left: 50%;
+  width: max-content;
+  max-width: min(56rem, calc(100vw - 3rem));
+  z-index: 40;
+  background-color: transparent;      /* the content pane carries the glass */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(calc(var(--nav-dd-rise, .5rem) * -1));
+  transition:
+    opacity   var(--nav-dd-dur, 260ms) var(--nav-dd-ease, cubic-bezier(.22, 1, .36, 1)),
+    transform var(--nav-dd-dur, 260ms) var(--nav-dd-ease, cubic-bezier(.22, 1, .36, 1)),
+    visibility 0s linear var(--nav-dd-dur, 260ms);
+}
+.nav_dropdown[data-state="open"] .nav_link-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+  transition-delay: 0s, 0s, 0s;
+}
+
+/* Bridge the gap between the trigger and the panel. Without it the pointer
+   leaves every element on the way down and the close timer starts. */
+.nav_link-dropdown::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--nav-dd-offset, .6rem) * -1);
+  height: var(--nav-dd-offset, .6rem);
+}
+
+/* the height animation was doing the same job a second time — drop it */
+.nav_dropdown-wrap {
+  height: auto;
+  overflow: visible;
+  transition: none;
+}
+
+/* ---- the panel itself ---- */
+.nav_dropdown-content {
+  grid-template-columns: repeat(4, minmax(9.5rem, 1fr));
+  gap: 1.25rem 1.75rem;
+  padding: 1.5rem 1.75rem;
+  align-items: start;
+}
+.nav_dropdown-column {
+  width: auto;
+  gap: .125rem;
+}
+.nav_dropdown-heading {
+  margin-bottom: .375rem;
+  padding: 0 .625rem;
+  font-family: var(--rx-font-body);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--rx-ink) 55%, transparent);
+  white-space: nowrap;
+}
+.nav_dropdown-link {
+  width: 100%;
+  padding: .5rem .625rem;
+  opacity: 1;                          /* was .7 — muddy over glass */
+  color: var(--rx-ink);
+  font-family: var(--rx-font-nav, var(--rx-font-body));
+  font-size: .95rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  border-radius: calc(var(--rx-radius-scale, 1) * .5rem);
+  transition:
+    background-color var(--rx-hover-dur, 260ms) ease,
+    color var(--rx-hover-dur, 260ms) ease;
+}
+.nav_dropdown-link:hover {
+  opacity: 1;
+  color: var(--rx-ink);
+  background-color: color-mix(in srgb, var(--rx-ink) 10%, transparent);
+}
+
+@media screen and (max-width: 991px) {
+  /* on mobile the nav is a stacked sheet — put the panel back in flow */
+  .nav_link-dropdown {
+    position: static;
+    width: auto;
+    max-width: none;
+    transform: none;
+    transition: opacity var(--nav-dd-dur, 260ms) ease;
+  }
+  .nav_dropdown[data-state="open"] .nav_link-dropdown { transform: none; }
+  .nav_link-dropdown::before { content: none; }
+  .nav_dropdown-content { grid-template-columns: 1fr 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav_link-dropdown { transition: opacity 1ms linear, visibility 0s; }
+}

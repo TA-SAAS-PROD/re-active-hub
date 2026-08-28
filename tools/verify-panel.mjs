@@ -56,6 +56,10 @@ const PROBE = {
   '--rx-totop-size':       ['.to-top', 'width', '4.5rem'],
   '--g-tint-modal':        ['.modal_dialog', 'backgroundColor', '10%'],
   '--g-tint-btn-modal':    ['.button.is-submit', 'backgroundColor', '10%'],
+  '--g-tint-nav':          ['.nav_dropdown-content', 'backgroundColor', '10%'],
+  '--nav-dd-dur':          ['.nav_link-dropdown', 'transition', '700ms'],
+  '--nav-dd-rise':         ['.nav_link-dropdown', 'transform', '2rem'],
+  '--nav-dd-offset':       ['.nav_link-dropdown', 'top', '2.5rem'],
   '--rx-footer-chips-lift':  ['.footer_contact-actions', 'bottom', '18rem'],
   '--rx-footer-chips-scale': ['.contact-chip', 'fontSize', '1.9'],
   '--rx-footer-chips-right': ['.footer_contact-actions', 'right', '14rem'],
@@ -116,7 +120,9 @@ await p.goto(URL, { waitMs: 4000 });
        which only exist AFTER the load choreography and reveals have run.
    So: scroll to fire the reveals, probe motion live, then settle and probe
    the rest.                                                              */
-const MOTION_KNOBS = new Set(['--rx-reveal-dur', '--rx-letter-stagger', '--rx-marquee-dur', '--rx-hover-dur']);
+const MOTION_KNOBS = new Set(['--rx-reveal-dur', '--rx-letter-stagger', '--rx-marquee-dur', '--rx-hover-dur',
+  // read before the QA settle kills every transition
+  '--nav-dd-dur']);
 
 /* --rx-reveal-blur is a third case: it sets the reveal's FROM state, so it
    can only be read on an element that has not revealed yet. Once the page is
@@ -265,6 +271,60 @@ const MOBILE_ONLY = {
     else fail.push(`${id}: NO-OP at 390 (${r.before})`);
   }
   await pm.close();
+}
+
+/* ---- JS-consumed knobs ------------------------------------------------
+   --nav-dd-open-delay and --nav-dd-close-delay are read by main.js, never
+   by CSS, so a computed-style probe is structurally blind to them. Time the
+   real hover instead: with a long delay the panel must NOT be open early
+   and MUST be open later. */
+const JS_TIMED = ['--nav-dd-open-delay', '--nav-dd-close-delay'];
+{
+  for (const id of JS_TIMED) {
+    const i = fail.indexOf(id + ': NO PROBE DEFINED');
+    if (i >= 0) fail.splice(i, 1);
+  }
+  const pj = await b.newPage(); await pj.init();
+  await pj.setViewport(1440, 900, 1);
+  await pj.goto(URL, { waitMs: 4000 });
+  await sleep(1800);
+
+  const openRes = JSON.parse(await pj.eval(`(async () => {
+    const dd = document.querySelector('[data-dropdown]');
+    document.documentElement.style.setProperty('--nav-dd-open-delay', '700');
+    dd.dispatchEvent(new MouseEvent('mouseenter'));
+    await new Promise((r) => setTimeout(r, 250));
+    const early = dd.dataset.state === 'open';
+    await new Promise((r) => setTimeout(r, 700));
+    const late = dd.dataset.state === 'open';
+    dd.dispatchEvent(new MouseEvent('mouseleave'));
+    document.documentElement.style.removeProperty('--nav-dd-open-delay');
+    return JSON.stringify({ early, late });
+  })()`));
+  if (!openRes.early && openRes.late) { pass++; console.log('  ok  --nav-dd-open-delay   700ms honoured: shut at 250ms, open at 950ms'); }
+  else fail.push(`--nav-dd-open-delay: not honoured (${JSON.stringify(openRes)})`);
+
+  await sleep(600);
+  const closeRes = JSON.parse(await pj.eval(`(async () => {
+    const dd = document.querySelector('[data-dropdown]');
+    document.documentElement.style.setProperty('--nav-dd-close-delay', '900');
+    document.documentElement.style.setProperty('--nav-dd-open-delay', '0');
+    dd.dispatchEvent(new MouseEvent('mouseenter'));
+    await new Promise((r) => setTimeout(r, 200));
+    const opened = dd.dataset.state === 'open';
+    dd.dispatchEvent(new MouseEvent('mouseleave'));
+    await new Promise((r) => setTimeout(r, 300));
+    const stillOpen = dd.dataset.state === 'open';
+    await new Promise((r) => setTimeout(r, 900));
+    const shut = dd.dataset.state !== 'open';
+    document.documentElement.style.removeProperty('--nav-dd-close-delay');
+    document.documentElement.style.removeProperty('--nav-dd-open-delay');
+    return JSON.stringify({ opened, stillOpen, shut });
+  })()`));
+  if (closeRes.opened && closeRes.stillOpen && closeRes.shut) { pass++; console.log('  ok  --nav-dd-close-delay  900ms honoured: still open at 300ms, shut by 1200ms'); }
+  else fail.push(`--nav-dd-close-delay: not honoured (${JSON.stringify(closeRes)})`);
+
+  await pj.close();
 }
 
 console.log(`\nknobs moving the page: ${pass}/${panel.knobs.length}`);

@@ -15,19 +15,19 @@
 
 :root[data-rx="vitruvian"] {
   /* surface */
-  --p-rule-alpha: 26%;      /* hairline strength on plates      */
-  --p-rule-width: 1px;
+  /* --p-rule-alpha: set by the direction */      /* hairline strength on plates      */
+  /* --p-rule-width: set by the direction */
   --p-chip-alpha: 42%;      /* drawn icon squares                */
 
   /* type optics — Cormorant is high-contrast old-style and needs its own */
-  --p-display-tracking: -.035em;
+  /* --p-display-tracking: set by the direction */
   /* heading tracking is exposed as --rx-heading-tracking (panel); this local
      name shadowed it and made the panel knob inert */
   --p-eyebrow-tracking: .18em;
 
   /* texture */
-  --p-plate-tooth: .32;     /* ruled tooth over the image plates */
-  --p-plate-wash: 46%;      /* how far the sanguine bleeds in    */
+  /* --p-plate-tooth: set by the direction */     /* ruled tooth over the image plates */
+  /* --p-plate-wash: set by the direction */      /* how far the sanguine bleeds in    */
 }
 
 /* ---- ruled plates ---------------------------------------------------
