@@ -48,8 +48,13 @@ node tools/verify-tweaks.mjs http://127.0.0.1:5179/
 It should report `tweak tokens live on the plain URL: 34/34`. Against a
 misconfigured deploy it reports the count that actually applied.
 
-A quick manual check on any deployed URL — this must return **200**, not 404:
+A quick manual check on any deployed URL. Check the **content**, not just the
+status code — if a host is configured with an SPA fallback, a missing file
+answers `200` with `index.html` and a status check tells you nothing:
 
 ```
-curl -s -o /dev/null -w "%{http_code}\n" https://<host>/remix/tokens.vitruvian.css
+curl -s https://<host>/remix/tokens.vitruvian.css | head -3
 ```
+
+It must print CSS beginning `/* direction: vitruvian`. If it prints
+`<!DOCTYPE html>`, the file is missing and you are seeing the fallback.

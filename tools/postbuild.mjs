@@ -10,8 +10,18 @@
         imports is gone after pass 1 — but dead dev code should not ship.
    Then assert that nothing panel-shaped survives. */
 import { rmSync, existsSync, readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import path from 'node:path';
 
-const D = 'C:/Users/prakash.c/cs-assessment/output/genovas-template.webflow.io/site/dist';
+/* Resolved from this file, never hard-coded: the build runs on a Linux
+   checkout at /opt/buildhome/repo as well as on a local Windows path.
+   An absolute path here broke the deploy with ENOENT after vite had already
+   written dist correctly. */
+const D = path.resolve(import.meta.dirname, '..', 'site', 'dist').split(path.sep).join('/');
+if (!existsSync(D)) {
+  console.error('FAIL: no build output at ' + D + ' — did vite build run?');
+  process.exit(1);
+}
+console.log('  postbuild target: ' + D);
 
 // ---- 1. delete dev-only files ----------------------------------------
 const DEV_ONLY = ['remix/tweak-panel.js', 'remix/panel.json', 'remix/dev-panel.js', 'remix/remix-loader.ts', 'directions.html', 'card-preview.html'];

@@ -25,7 +25,12 @@
   "compatibility_date": "2026-08-28",
   "assets": {
     "directory": "./site/dist",
-    "not_found_handling": "single-page-application"
+    // Deliberately NOT single-page-application. This is one static page with
+    // real sub-resources, and an SPA fallback answers 200 with index.html for
+    // anything missing — which would have hidden the very bug this config
+    // exists to fix: a missing /remix/tokens.<slug>.css returning 200 instead
+    // of a 404 you can see. Let missing files 404.
+    "not_found_handling": "none"
   },
   "build": {
     "command": "npm ci && npm run build",
