@@ -1,0 +1,103 @@
+/* ==================================================================
+   REMIX BASE — the knob surface.
+
+   Loaded BEFORE base.css. Two layers:
+
+   1. --rx-* roles: the knobs. Directions and the tweak panel set these.
+   2. the site's own --brand--* / --text-color--* / --bg-color--* vocabulary,
+      re-pointed at those roles. Keeping the site's names means base.css is
+      untouched and the cascade is unchanged.
+
+   Every value below is the clone's measured default, so with no direction
+   applied the page renders byte-identically to the verified clone.
+   ================================================================== */
+
+:root {
+  /* ---- Colour roles ------------------------------------------------
+     Named by the job each colour does in the layout, not by its hue, so a
+     direction can swap the palette without the names going nonsense.     */
+  --rx-ground:        #f1f1f1;  /* page behind the floating panels        */
+  --rx-panel:         #ffffff;  /* the rounded content cards              */
+  --rx-ink:           #1a1d20;  /* primary text                           */
+  --rx-ink-2:         #333b46;  /* secondary text                         */
+  --rx-ink-3:         #312938;  /* the hero wordmark                      */
+  --rx-accent:        #f3ec9e;  /* the one saturated note (was yellow)    */
+  --rx-accent-2:      #c6cbde;  /* the second tint (was periwinkle)       */
+  --rx-slate:         #656776;  /* marquee + footer panel                 */
+  --rx-solid:         #2b2c2e;  /* buttons + icon chips                   */
+  --rx-tint-1:        #eeeeee;  /* card tint                              */
+  --rx-tint-2:        #e9e8ee;  /* card tint                              */
+  --rx-neutral:       #bbbcc0;  /* the grey case panel                    */
+  --rx-rule:          #e7ebf1;  /* hairlines                              */
+  --rx-border:        #efeff2;
+
+  /* ---- Type --------------------------------------------------------- */
+  --rx-font-display:  "DM Sans", system-ui, sans-serif;
+  --rx-font-body:     "DM Sans", system-ui, sans-serif;
+  --rx-display-scale: 1;      /* multiplies the 20vw hero wordmark        */
+  --rx-heading-weight: 400;
+
+  /* ---- Space -------------------------------------------------------- */
+  --rx-root-scale:    1;      /* multiplies the fluid root -> ALL rem     */
+  --rx-radius-scale:  1;      /* multiplies every border-radius           */
+
+  /* ---- Motion ------------------------------------------------------- */
+  --rx-reveal-dur:     1000ms;
+  --rx-reveal-delay:   100ms;
+  --rx-reveal-blur:    30px;
+  --rx-reveal-ease:    cubic-bezier(.16, 1, .3, 1);
+  --rx-card-dur:       700ms;
+  --rx-card-ease:      cubic-bezier(.25, 1, .5, 1);
+  --rx-letter-stagger: 100ms;
+  --rx-letter-travel:  150%;
+  --rx-letter-blur:    40px;
+  --rx-marquee-dur:    40000ms;
+  --rx-hover-dur:      250ms;
+
+  /* ==================================================================
+     Site vocabulary, re-pointed. base.css keeps referring to these names.
+     ================================================================== */
+  --brand--neutral-light:      var(--rx-ground);
+  --brand--white:              var(--rx-panel);
+  --brand--black:              var(--rx-ink);
+  --brand--black-secondary:    var(--rx-ink-3);
+  --brand--paragraph-dark:     var(--rx-ink-2);
+  --brand--yellow:             var(--rx-accent);
+  --brand--grey-alternate:     var(--rx-accent-2);
+  --brand--grey:               var(--rx-slate);
+  --brand--bg-black:           var(--rx-solid);
+  --brand--grey-light:         var(--rx-tint-1);
+  --brand--grey-lighter:       var(--rx-tint-2);
+  --brand--neutral:            var(--rx-neutral);
+  --brand--neutral-dark:       #595959;
+
+  --text-color--text-primary:   var(--rx-ink);
+  --text-color--text-secondary: var(--rx-ink-2);
+  --text-color--text-tertiary:  var(--rx-ink-3);
+  --bg-color--bg-primary:       var(--rx-panel);
+  --bg-color--bg-secondary:     var(--rx-ground);
+  --bg-color--bg-tertiary:      var(--rx-slate);
+  --bg-color--bg-alternate:     var(--rx-accent);
+  --border-color--border-primary:   var(--rx-border);
+  --border-color--border-secondary: #d4d4d8;
+  --border-color--border-alternate: var(--rx-panel);
+  --link-color--link-primary:       var(--rx-ink);
+  --link-color--link-alternate:     var(--rx-panel);
+
+  /* The literals tokenize-css.js lifted out of base.css, pointed at the
+     same roles so both paths move together instead of drifting apart. */
+  --rx-color-1:    var(--rx-panel);
+  --rx-color-2:    var(--rx-solid);
+  --rx-color-bg:   var(--rx-ground);
+  --rx-color-4:    var(--rx-ink-3);
+  --rx-color-text: #000000;
+  --rx-color-6:    var(--rx-ink);
+  --rx-color-7:    #666666;
+  --rx-color-8:    var(--rx-ink-2);
+  --rx-color-9:    var(--rx-slate);
+  --rx-color-10:   var(--rx-rule);
+  --rx-color-11:   var(--rx-accent);
+}
+
+/* The rules that APPLY these tokens into base.css selectors live in
+   brand.css, which loads after base.css and therefore wins on order. */

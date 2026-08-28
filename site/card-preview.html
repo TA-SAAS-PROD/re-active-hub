@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-rx="vitruvian" data-loaded>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Card candidates — What we treat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Share+Tech:wght@400&family=Raleway:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/styles/remix-tokens.css">
+<link rel="stylesheet" href="assets/styles/base.css">
+<link rel="stylesheet" href="assets/styles/brand.css">
+<link rel="stylesheet" href="assets/styles/glass.css">
+<link rel="stylesheet" href="remix/tokens.vitruvian.css">
+<link rel="stylesheet" href="remix/patch.vitruvian.css">
+<style>
+  body { background: var(--rx-ground); padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem; }
+  .sheet_head { margin: 0 0 2rem; font-family: var(--rx-font-display); color: var(--rx-ink); }
+  .sheet_head h1 { font-size: 2rem; margin: 0 0 .25rem; font-weight: 600; }
+  .sheet_head p { font-family: var(--rx-font-body); color: var(--rx-ink-2); margin: 0; font-size: .95rem; }
+  .row { margin-bottom: 2.5rem; }
+  .row_title { font-family: var(--rx-font-body); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+               color: var(--rx-ink-2); margin: 0 0 .75rem; }
+  .row_cards { display: grid; grid-template-columns: repeat(3, 436px); gap: 1.25rem; }
+  .opt { margin: 0; }
+  .opt_cap { font-family: var(--rx-font-body); font-size: .78rem; color: var(--rx-ink-2); margin-bottom: .4rem; }
+  /* the card box, exactly as it measures on the page */
+  .row_cards .expertise_card { width: 436px; height: 408px; }
+
+  /* THE PROPOSAL: photo behind, scrim only where the type sits, so the
+     copy keeps its contrast and the picture still reads. Same principle
+     as the hero — the image is not decoration behind text, the dark is
+     placed deliberately under the words. */
+  .expertise_card.has-photo { position: relative; isolation: isolate; overflow: hidden; }
+  .expertise_card.has-photo::after {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background-image: var(--card-img);
+    background-size: cover; background-position: center;
+  }
+  .expertise_card.has-photo::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.18) 38%, rgba(0,0,0,.10) 55%, rgba(0,0,0,.72) 100%);
+  }
+  .expertise_card.has-photo,
+  .expertise_card.has-photo .text-2xl,
+  .expertise_card.has-photo .text-base { color: var(--rx-panel); }
+  .expertise_card.has-photo .icon-box { color: var(--rx-panel); }
+</style>
+</head>
+<body>
+<div class="sheet_head">
+  <h1>&ldquo;What we treat&rdquo; &mdash; card candidates</h1>
+  <p>Real card markup, real stylesheets, real 436&times;408 box. Three takes per card. Nothing here is wired into the page.</p>
+</div>
+
+  <section class="row">
+    <h3 class="row_title">Back & Neck Pain</h3>
+    <div class="row_cards">
+      
+      <figure class="opt">
+        <figcaption class="opt_cap">A — hands-on detail</figcaption>
+        <div class="expertise_card has-photo" style="--card-img:url('assets/img/card-options/back-neck-A.jpg')">
+          <div class="text-2xl">Back &amp; Neck Pain</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Slipped disc, sciatica and long-standing spine pain, assessed properly.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">B — therapist & patient</figcaption>
+        <div class="expertise_card has-photo" style="--card-img:url('assets/img/card-options/back-neck-B.jpg')">
+          <div class="text-2xl">Back &amp; Neck Pain</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Slipped disc, sciatica and long-standing spine pain, assessed properly.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">C — environmental</figcaption>
+        <div class="expertise_card has-photo" style="--card-img:url('assets/img/card-options/back-neck-C.jpg')">
+          <div class="text-2xl">Back &amp; Neck Pain</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Slipped disc, sciatica and long-standing spine pain, assessed properly.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+  <section class="row">
+    <h3 class="row_title">Sports Injury</h3>
+    <div class="row_cards">
+      
+      <figure class="opt">
+        <figcaption class="opt_cap">A — hands-on detail</figcaption>
+        <div class="expertise_card is-yellow has-photo" style="--card-img:url('assets/img/card-options/sports-A.jpg')">
+          <div class="text-2xl">Sports Injury</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Get back to the game without carrying the injury with you.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">B — therapist & patient</figcaption>
+        <div class="expertise_card is-yellow has-photo" style="--card-img:url('assets/img/card-options/sports-B.jpg')">
+          <div class="text-2xl">Sports Injury</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Get back to the game without carrying the injury with you.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">C — environmental</figcaption>
+        <div class="expertise_card is-yellow has-photo" style="--card-img:url('assets/img/card-options/sports-C.jpg')">
+          <div class="text-2xl">Sports Injury</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Get back to the game without carrying the injury with you.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+  <section class="row">
+    <h3 class="row_title">Post-Surgical Rehab</h3>
+    <div class="row_cards">
+      
+      <figure class="opt">
+        <figcaption class="opt_cap">A — hands-on detail</figcaption>
+        <div class="expertise_card is-neutral-light has-photo" style="--card-img:url('assets/img/card-options/postsurg-A.jpg')">
+          <div class="text-2xl">Post-Surgical Rehab</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Structured recovery after surgery, paced to what your body can take.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">B — therapist & patient</figcaption>
+        <div class="expertise_card is-neutral-light has-photo" style="--card-img:url('assets/img/card-options/postsurg-B.jpg')">
+          <div class="text-2xl">Post-Surgical Rehab</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Structured recovery after surgery, paced to what your body can take.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">C — environmental</figcaption>
+        <div class="expertise_card is-neutral-light has-photo" style="--card-img:url('assets/img/card-options/postsurg-C.jpg')">
+          <div class="text-2xl">Post-Surgical Rehab</div>
+          <div class="expertise_wrap">
+            <div class="text-base">Structured recovery after surgery, paced to what your body can take.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+  <section class="row">
+    <h3 class="row_title">Posture & Desk Strain</h3>
+    <div class="row_cards">
+      
+      <figure class="opt">
+        <figcaption class="opt_cap">A — hands-on detail</figcaption>
+        <div class="expertise_card is-grey-light has-photo" style="--card-img:url('assets/img/card-options/posture-A.jpg')">
+          <div class="text-2xl">Posture &amp; Desk Strain</div>
+          <div class="expertise_wrap">
+            <div class="text-base">For the pain that builds slowly over years at a desk or a wheel.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">B — therapist & patient</figcaption>
+        <div class="expertise_card is-grey-light has-photo" style="--card-img:url('assets/img/card-options/posture-B.jpg')">
+          <div class="text-2xl">Posture &amp; Desk Strain</div>
+          <div class="expertise_wrap">
+            <div class="text-base">For the pain that builds slowly over years at a desk or a wheel.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">C — environmental</figcaption>
+        <div class="expertise_card is-grey-light has-photo" style="--card-img:url('assets/img/card-options/posture-C.jpg')">
+          <div class="text-2xl">Posture &amp; Desk Strain</div>
+          <div class="expertise_wrap">
+            <div class="text-base">For the pain that builds slowly over years at a desk or a wheel.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+  <section class="row">
+    <h3 class="row_title">Home Physiotherapy</h3>
+    <div class="row_cards">
+      
+      <figure class="opt">
+        <figcaption class="opt_cap">A — hands-on detail</figcaption>
+        <div class="expertise_card is-grey-lighter has-photo" style="--card-img:url('assets/img/card-options/home-A.jpg')">
+          <div class="text-2xl">Home Physiotherapy</div>
+          <div class="expertise_wrap">
+            <div class="text-base">When getting to the clinic is the hard part, we come to you.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">B — therapist & patient</figcaption>
+        <div class="expertise_card is-grey-lighter has-photo" style="--card-img:url('assets/img/card-options/home-B.jpg')">
+          <div class="text-2xl">Home Physiotherapy</div>
+          <div class="expertise_wrap">
+            <div class="text-base">When getting to the clinic is the hard part, we come to you.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+      <figure class="opt">
+        <figcaption class="opt_cap">C — environmental</figcaption>
+        <div class="expertise_card is-grey-lighter has-photo" style="--card-img:url('assets/img/card-options/home-C.jpg')">
+          <div class="text-2xl">Home Physiotherapy</div>
+          <div class="expertise_wrap">
+            <div class="text-base">When getting to the clinic is the hard part, we come to you.</div>
+            <div class="icon-box"><div class="icon_wrap">
+              <svg class="icon-1x1-medium is-firts" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8.95893 22.871L20.5083 11.3216L10.6088 11.3216L10.524 9.99227L22.7805 9.99227L22.7805 22.2488L21.4512 22.1639L21.4512 12.2644L9.90174 23.8138L8.95893 22.871Z" fill="currentColor"/></svg>
+            </div></div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+</body>
+</html>

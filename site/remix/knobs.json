@@ -1,0 +1,38 @@
+{
+  "generatedFrom": "tokens-1440.json + motion.json, curated",
+  "note": "tokenize-css.js emitted 73 raw knobs; 18 were the template vendor's promo-widget tokens and 20 were --rx-size-*/--rx-space-* entries that matched nothing (this clone is rem-based, not px). What remains is the set where every entry provably moves the page.",
+  "knobs": [
+    { "id": "--rx-ground",   "group": "Color", "type": "color", "default": "#f1f1f1", "label": "Page ground",        "note": "behind the floating panels" },
+    { "id": "--rx-panel",    "group": "Color", "type": "color", "default": "#ffffff", "label": "Panel",              "note": "the rounded content cards" },
+    { "id": "--rx-ink",      "group": "Color", "type": "color", "default": "#1a1d20", "label": "Ink" },
+    { "id": "--rx-ink-2",    "group": "Color", "type": "color", "default": "#333b46", "label": "Ink secondary" },
+    { "id": "--rx-ink-3",    "group": "Color", "type": "color", "default": "#312938", "label": "Wordmark ink" },
+    { "id": "--rx-accent",   "group": "Color", "type": "color", "default": "#f3ec9e", "label": "Accent",             "note": "the one saturated note" },
+    { "id": "--rx-accent-2", "group": "Color", "type": "color", "default": "#c6cbde", "label": "Accent 2" },
+    { "id": "--rx-slate",    "group": "Color", "type": "color", "default": "#656776", "label": "Slate panel",        "note": "marquee + footer" },
+    { "id": "--rx-solid",    "group": "Color", "type": "color", "default": "#2b2c2e", "label": "Button solid" },
+    { "id": "--rx-tint-1",   "group": "Color", "type": "color", "default": "#eeeeee", "label": "Card tint 1" },
+    { "id": "--rx-tint-2",   "group": "Color", "type": "color", "default": "#e9e8ee", "label": "Card tint 2" },
+    { "id": "--rx-neutral",  "group": "Color", "type": "color", "default": "#bbbcc0", "label": "Case panel" },
+    { "id": "--rx-rule",     "group": "Color", "type": "color", "default": "#e7ebf1", "label": "Hairline" },
+
+    { "id": "--rx-font-display",   "group": "Type", "type": "font",   "default": "\"DM Sans\", system-ui, sans-serif", "label": "Display face" },
+    { "id": "--rx-font-body",      "group": "Type", "type": "font",   "default": "\"DM Sans\", system-ui, sans-serif", "label": "Body face" },
+    { "id": "--rx-display-scale",  "group": "Type", "type": "number", "default": 1, "min": 0.4, "max": 1.3, "step": 0.01, "label": "Wordmark scale", "note": "multiplies the 20vw hero type" },
+    { "id": "--rx-heading-weight", "group": "Type", "type": "number", "default": 400, "min": 300, "max": 700, "step": 100, "label": "Heading weight" },
+
+    { "id": "--rx-root-scale",   "group": "Space", "type": "number", "default": 1, "min": 0.85, "max": 1.15, "step": 0.01, "label": "Density", "note": "multiplies the fluid root font-size, so it moves EVERY rem — type and spacing together. The single most powerful knob on this page." },
+    { "id": "--rx-radius-scale", "group": "Space", "type": "number", "default": 1, "min": 0, "max": 2, "step": 0.05, "label": "Corner radius", "note": "40 rewritten border-radius declarations; 0 squares the whole design" },
+
+    { "id": "--rx-reveal-dur",     "group": "Motion", "type": "duration", "default": "1000ms", "min": 0,  "max": 2000, "step": 50, "label": "Reveal duration" },
+    { "id": "--rx-reveal-delay",   "group": "Motion", "type": "duration", "default": "100ms",  "min": 0,  "max": 600,  "step": 20, "label": "Reveal delay" },
+    { "id": "--rx-reveal-blur",    "group": "Motion", "type": "length",   "default": "30px",   "min": 0,  "max": 60,   "step": 1,  "label": "Reveal blur", "note": "the site's signature move — blur-in, not slide-in" },
+    { "id": "--rx-reveal-ease",    "group": "Motion", "type": "ease",     "default": "cubic-bezier(.16, 1, .3, 1)", "label": "Reveal curve" },
+    { "id": "--rx-card-dur",       "group": "Motion", "type": "duration", "default": "700ms",  "min": 0,  "max": 1500, "step": 50, "label": "Card fade" },
+    { "id": "--rx-letter-stagger", "group": "Motion", "type": "duration", "default": "100ms",  "min": 0,  "max": 300,  "step": 10, "label": "Wordmark stagger", "note": "per-letter delay on load" },
+    { "id": "--rx-letter-travel",  "group": "Motion", "type": "length",   "default": "150%",   "min": 0,  "max": 300,  "step": 10, "label": "Wordmark travel" },
+    { "id": "--rx-letter-blur",    "group": "Motion", "type": "length",   "default": "40px",   "min": 0,  "max": 80,   "step": 2,  "label": "Wordmark blur" },
+    { "id": "--rx-marquee-dur",    "group": "Motion", "type": "duration", "default": "40000ms","min": 8000, "max": 90000, "step": 1000, "label": "Marquee speed" },
+    { "id": "--rx-hover-dur",      "group": "Motion", "type": "duration", "default": "250ms",  "min": 0,  "max": 600,  "step": 25, "label": "Hover speed" }
+  ]
+}

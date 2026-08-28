@@ -1,0 +1,335 @@
+/* ==================================================================
+   LIQUID GLASS LAYER
+
+   Ported from ui-layouts' LiquidGlassCard
+   (github.com/ui-layouts/uilayouts — apps/ui-layout/components/ui/
+   liquid-glass.tsx). That component is React + Tailwind + motion/react;
+   this site is vanilla static HTML, so the technique is reimplemented
+   rather than installed. The structure and the numbers are theirs:
+
+     bend layer   backdrop-blur + filter: url(#glass-blur), where the
+                  filter is feTurbulence(fractalNoise, 0.003 0.007, 1
+                  octave) -> feDisplacementMap(scale 200, R/G).
+                  THIS is what makes glass read as a lens instead of
+                  frosted plastic — it warps the blurred backdrop.
+     face layer   outer glow: 0 4px 4px rgba(0,0,0,.15),
+                  0 0 12px rgba(0,0,0,.08), 0 0 24px rgba(255,255,255,.1)
+     edge layer   SYMMETRIC inner highlight: inset 2px 2px 2px
+                  rgba(255,255,255,.35) AND inset -2px -2px 2px
+                  rgba(255,255,255,.35) — both corners light, which is
+                  what gives the rim its liquid look. (A conventional
+                  bevel lights one corner and darkens the other.)
+
+   Mapped onto the page: the pane element carries the tint + face glow,
+   ::before is the bend layer, ::after is the edge layer.
+
+   HOW TRANSPARENT A PANE CAN BE IS SET BY ITS TEXT, NOT BY TASTE.
+   Measured for this palette:
+     light pane + dark ink over the parchment ground:  10.33:1 at 0% tint
+       -> passes at ANY opacity, so these go properly see-through.
+     dark pane + cream text over the parchment ground: 1.93:1 at 40%
+       -> only passes when nearly solid. Making the footer opaque is the
+          wrong fix; giving its SECTION a dark ground is the right one,
+          which takes the same pane to 10.7:1 at 20%.
+   Verified by tools/check-contrast.mjs, 13 surfaces x 3 directions x 2
+   breakpoints.
+   ================================================================== */
+
+:root {
+  /* bend — the refraction */
+  --g-bend: url(#rx-bend-md);   /* none | #rx-bend-sm | -md | -lg        */
+  --g-blur: 14px;
+  --g-saturate: 1.7;
+  --g-brightness: 1.05;
+
+  /* pane opacity — see the note above before raising these */
+  --g-tint: 34%;            /* cards: dark ink passes at any value        */
+  /* The outer section panels are grouping surfaces that CONTAIN the cards.
+     At the same tint the two stack (34% over 34% reads ~57%) and each card
+     blurs an already-blurred layer, which mutes the whole effect — the
+     upstream component is one card over a photo, not panes inside panes.
+     Keeping the shell nearly clear lets the cards refract the real field. */
+  --g-tint-shell: 10%;
+  --g-tint-hero: 34%;       /* the hero bar, over the photograph          */
+  --g-tint-dark: 44%;       /* footer + marquee, over their own dark ground */
+  --g-tint-btn: 56%;        /* buttons, chips, monograms                  */
+  --g-tint-btn-hero: 88%;   /* hero CTA: dark ink over a photograph      */
+  --g-tint-btn-modal: 94%;  /* modal submit: cream label on a light panel */
+  --g-dark-ground: 82%;     /* how dark the two dark sections sit         */
+
+  /* edge — upstream's symmetric double highlight, their `sm` step */
+  --g-edge-size: 2px;
+  --g-edge-alpha: 0.35;
+
+  /* face — upstream's glow, their `sm` step */
+  --g-glow-dark: 0.15;
+  --g-glow-soft: 0.08;
+  --g-glow-white: 0.10;
+  --g-glow-spread: 24px;
+
+  /* depth beneath the pane */
+  --g-shadow-alpha: 0.18;
+  --g-shadow-y: 24px;
+  --g-shadow-blur: 60px;
+
+  /* the field the panes refract */
+  /* The displacement warps whatever is behind the pane, so the field needs
+     STRUCTURE to bend. At 70px blur it was a smooth wash and the refraction
+     had nothing to act on — the panes read as plain frost. Tighter blur and
+     more, smaller shapes give the lens something to distort. */
+  --g-ambient: 0.9;
+  --g-ambient-spread: 88%;   /* stop position — lower = tighter, more structure */
+  --g-noise: 0.035;
+
+  /* interaction — upstream scales the card on hover/press */
+  --g-hover-scale: 1.01;
+  --g-press-scale: 0.99;
+}
+
+/* ---- the ambient field -----------------------------------------------
+   Painted as body's own background-image, NOT as a z-index:-1 pseudo.
+   A negative-z pseudo on body sits behind body's opaque background-color,
+   so the field was invisible and every pane was blurring flat parchment —
+   which is exactly why the refraction had nothing to show. Measured: the
+   page gutters read rgb(220,207,178), i.e. the bare body colour.
+
+   background-attachment: fixed so it behaves like a backdrop rather than
+   scrolling with the content. Radial stops are already smooth, so no blur
+   pass is needed; --g-ambient-blur now controls the SPREAD of each stop,
+   which is what gives the lens more or less structure to bend.
+   -------------------------------------------------------------------- */
+body {
+  background-image:
+    radial-gradient(53vmax 43vmax at 10% 6%,   color-mix(in srgb, var(--rx-accent)   calc(var(--g-ambient) * 62%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(43vmax 38vmax at 34% 28%,  color-mix(in srgb, var(--rx-accent-2) calc(var(--g-ambient) * 70%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(48vmax 48vmax at 62% 12%,  color-mix(in srgb, var(--rx-slate)    calc(var(--g-ambient) * 58%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(58vmax 43vmax at 88% 34%,  color-mix(in srgb, var(--rx-accent)   calc(var(--g-ambient) * 52%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(48vmax 53vmax at 18% 58%,  color-mix(in srgb, var(--rx-slate)    calc(var(--g-ambient) * 52%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(53vmax 43vmax at 72% 66%,  color-mix(in srgb, var(--rx-accent-2) calc(var(--g-ambient) * 62%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(43vmax 43vmax at 44% 86%,  color-mix(in srgb, var(--rx-accent)   calc(var(--g-ambient) * 58%), transparent) 0%, transparent var(--g-ambient-spread)),
+    radial-gradient(58vmax 48vmax at 90% 92%,  color-mix(in srgb, var(--rx-slate)    calc(var(--g-ambient) * 48%), transparent) 0%, transparent var(--g-ambient-spread));
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* the two dark sections get a dark ground so their panes can be
+   transparent at all — see the note at the top */
+.section_footer,
+.section_specialties {
+  background-color: color-mix(in srgb, var(--rx-ink) var(--g-dark-ground), var(--rx-slate));
+}
+
+/* ==================================================================
+   the panes
+   .container-box.is-hero-visual is excluded throughout: it carries the
+   photograph, and frosting it would blur the image against nothing.
+   ================================================================== */
+.navbar_content,
+.container-box:not(.is-hero-visual),
+.expertise_card,
+.differentiators_card,
+.testimonials_card,
+.cases_card,
+.footer_content,
+.specialties_content,
+.button,
+.icon-box,
+.author_img.is-monogram,
+.nav_dropdown-content {
+  position: relative;
+  isolation: isolate;
+  /* face layer */
+  box-shadow:
+    0 4px 4px rgba(0, 0, 0, var(--g-glow-dark)),
+    0 0 12px rgba(0, 0, 0, var(--g-glow-soft)),
+    0 0 var(--g-glow-spread) rgba(255, 255, 255, var(--g-glow-white)),
+    0 var(--g-shadow-y) var(--g-shadow-blur)
+      calc(var(--g-shadow-blur) / -3.5) rgba(0, 0, 0, var(--g-shadow-alpha));
+}
+
+/* ---- bend layer ------------------------------------------------------
+   backdrop-filter does the blur; the SVG filter displaces the result.
+   -------------------------------------------------------------------- */
+.navbar_content::before,
+.container-box:not(.is-hero-visual)::before,
+.expertise_card::before,
+.differentiators_card::before,
+.testimonials_card::before,
+.cases_card::before,
+.footer_content::before,
+.specialties_content::before,
+.button::before,
+.icon-box::before,
+.author_img.is-monogram::before,
+.nav_dropdown-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  -webkit-backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate)) brightness(var(--g-brightness));
+  backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate)) brightness(var(--g-brightness));
+  filter: var(--g-bend);
+}
+
+/* ---- edge layer ------------------------------------------------------
+   Both corners lit, which is upstream's move and the reason the rim
+   reads as liquid rather than as a bevel.
+   -------------------------------------------------------------------- */
+.navbar_content::after,
+.container-box:not(.is-hero-visual)::after,
+.expertise_card::after,
+.differentiators_card::after,
+.testimonials_card::after,
+.cases_card::after,
+.footer_content::after,
+.specialties_content::after,
+.button::after,
+.icon-box::after,
+.author_img.is-monogram::after,
+.nav_dropdown-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset  var(--g-edge-size)  var(--g-edge-size) var(--g-edge-size) 0 rgba(255, 255, 255, var(--g-edge-alpha)),
+    inset calc(var(--g-edge-size) * -1) calc(var(--g-edge-size) * -1) var(--g-edge-size) 0 rgba(255, 255, 255, var(--g-edge-alpha));
+}
+
+/* content rides above both layers.
+   NB: :not(.is-hero-visual) matters — the hero centres .hero_content with
+   position:absolute, and a blanket `> * { position: relative }` silently
+   overrode it and shifted the wordmark out of the middle. */
+.navbar_content > *,
+.container-box:not(.is-hero-visual) > *,
+.expertise_card > *,
+.differentiators_card > *,
+.testimonials_card > *,
+.cases_card > *,
+.footer_content > *,
+.specialties_content > *,
+.button > *,
+.icon-box > *,
+.nav_dropdown-content > * { position: relative; z-index: 2; }
+
+.author_img.is-monogram { z-index: 0; }
+
+/* ---- tints ----------------------------------------------------------- */
+.navbar_content,
+.nav_dropdown-content { background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint), transparent); }
+.container-box:not(.is-hero-visual) { background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint-shell), transparent); }
+
+.expertise_card                  { background-color: color-mix(in srgb, var(--rx-accent-2) var(--g-tint), transparent); }
+.expertise_card.is-yellow        { background-color: color-mix(in srgb, var(--rx-accent) var(--g-tint), transparent); }
+.expertise_card.is-neutral-light { background-color: color-mix(in srgb, var(--rx-ground) var(--g-tint), transparent); }
+.expertise_card.is-grey-light    { background-color: color-mix(in srgb, var(--rx-tint-1) var(--g-tint), transparent); }
+.expertise_card.is-grey-lighter  { background-color: color-mix(in srgb, var(--rx-tint-2) var(--g-tint), transparent); }
+.differentiators_card            { background-color: color-mix(in srgb, var(--rx-ground) var(--g-tint), transparent); }
+.testimonials_card               { background-color: color-mix(in srgb, var(--rx-ground) var(--g-tint), transparent); }
+.cases_card                      { background-color: color-mix(in srgb, var(--rx-accent) var(--g-tint), transparent); }
+.container-box.is-grey           { background-color: color-mix(in srgb, var(--rx-neutral) var(--g-tint), transparent); }
+
+.footer_content      { background-color: color-mix(in srgb, var(--rx-slate) var(--g-tint-dark), transparent); }
+.specialties_content { background-color: color-mix(in srgb, var(--rx-slate) var(--g-tint-dark), transparent); }
+
+.button                 { background-color: color-mix(in srgb, var(--rx-solid) var(--g-tint-btn), transparent); }
+.icon-box               { background-color: color-mix(in srgb, var(--rx-solid) var(--g-tint-btn), transparent); }
+.author_img.is-monogram { background-color: color-mix(in srgb, var(--rx-accent) var(--g-tint-btn), transparent); }
+.hero-cta .button       { background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint-btn-hero), transparent); }
+.button.is-submit       { background-color: color-mix(in srgb, var(--rx-solid) var(--g-tint-btn-modal), transparent); }
+
+/* ---- the hero bar ----------------------------------------------------
+   The one place on this page with a SHARP backdrop. Displacement warps
+   whatever is behind the pane, so over a soft colour field it is nearly
+   invisible; over the photograph it reads properly — which is the
+   composition the upstream demo uses (a card floating on an image).
+   The hero's bottom row becomes a real glass bar sitting on the photo.
+   -------------------------------------------------------------------- */
+.hero-cta.is-home-two {
+  position: relative;
+  isolation: isolate;
+  padding: 1rem 1.25rem;
+  border-radius: calc(var(--rx-radius-scale, 1) * 1.25rem);
+  background-color: color-mix(in srgb, var(--rx-ink) var(--g-tint-hero, 34%), transparent);
+  box-shadow:
+    0 4px 4px rgba(0, 0, 0, var(--g-glow-dark)),
+    0 0 var(--g-glow-spread) rgba(255, 255, 255, var(--g-glow-white)),
+    0 var(--g-shadow-y) var(--g-shadow-blur)
+      calc(var(--g-shadow-blur) / -3.5) rgba(0, 0, 0, var(--g-shadow-alpha));
+}
+.hero-cta.is-home-two::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  -webkit-backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate)) brightness(var(--g-brightness));
+  backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate)) brightness(var(--g-brightness));
+  filter: var(--g-bend);
+}
+.hero-cta.is-home-two::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset  var(--g-edge-size)  var(--g-edge-size) var(--g-edge-size) 0 rgba(255,255,255,var(--g-edge-alpha)),
+    inset calc(var(--g-edge-size) * -1) calc(var(--g-edge-size) * -1) var(--g-edge-size) 0 rgba(255,255,255,var(--g-edge-alpha));
+}
+.hero-cta.is-home-two > * { position: relative; z-index: 2; }
+
+/* the button's rolling text slabs are opaque in the original and would
+   sit on top of the frosting */
+.button-shadow-up,
+.button-shadow-down { display: none; }
+
+/* ---- interaction ------------------------------------------------------
+   Upstream scales the card on hover and press. Applied to the pieces that
+   are actually interactive, not to every pane.
+   -------------------------------------------------------------------- */
+.button,
+.expertise_card,
+.icon-box { transition: transform var(--rx-hover-dur, 250ms) cubic-bezier(.16, 1, .3, 1); }
+.button:hover,
+.expertise_card:hover { transform: scale(var(--g-hover-scale)); }
+.button:active { transform: scale(var(--g-press-scale)); }
+
+/* grain */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: var(--g-noise);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- graceful degradation -------------------------------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .navbar_content,
+  .container-box:not(.is-hero-visual),
+  .expertise_card,
+  .differentiators_card,
+  .testimonials_card,
+  .cases_card,
+  .nav_dropdown-content { background-color: var(--rx-panel); }
+  .expertise_card.is-yellow { background-color: var(--rx-accent); }
+  .container-box.is-grey    { background-color: var(--rx-neutral); }
+  .footer_content,
+  .specialties_content      { background-color: var(--rx-slate); }
+  .button, .icon-box        { background-color: var(--rx-solid); }
+  .hero-cta .button         { background-color: var(--rx-panel); }
+  body::before { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:hover, .expertise_card:hover, .button:active { transform: none; }
+}

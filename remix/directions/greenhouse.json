@@ -1,0 +1,71 @@
+{
+  "name": "greenhouse",
+  "amplitude": "medium",
+  "thesis": "Clinical-botanical: a warm cream canvas layered with sage and keylime panels, one deep forest ink carrying every heading and every action. Shadowless — depth comes from tinted layers, not elevation.",
+  "anchor": "design library entry `ease-health` (Editorial Warm) — \"Botanical greenhouse on cream paper\". Palette pinned hex-for-hex from its nine-swatch strip.",
+  "forks": {
+    "palette": "green tinted-neutral, dichromatic + signal (vs A's cool grey, vs B's warm parchment)",
+    "type": "serif display (Playfair Display, the entry's own listed substitute for Faire Octave) over grotesk text",
+    "surface": "14px radius, flat and explicitly shadowless (vs A's 24px, vs B's ruled squares)",
+    "density": "tighter — entry density 4, root x0.96",
+    "motion": "crisper — 760ms, minimal blur; flat surfaces do not want a soft focus pull"
+  },
+  "paletteSource": {
+    "Forest Ink": "#0f3e17",
+    "Sage Mist": "#b1dbb8",
+    "Keylime Wash": "#e1f4df",
+    "Mint Veil": "#cfe7d3",
+    "Slate Hush": "#b6ced5",
+    "Cream Paper": "#fffefc",
+    "Charcoal": "#222222",
+    "Border Mist": "#efeeeb",
+    "Forest Shadow": "#0c2f10"
+  },
+  "tokens": {
+    "--rx-ground": "#e1f4df",
+    "--rx-panel": "#fffefc",
+    "--rx-ink": "#0f3e17",
+    "--rx-ink-2": "#222222",
+    "--rx-ink-3": "#0c2f10",
+    "--rx-accent": "#b1dbb8",
+    "--rx-accent-2": "#cfe7d3",
+    "--rx-slate": "#0f3e17",
+    "--rx-solid": "#0f3e17",
+    "--rx-tint-1": "#cfe7d3",
+    "--rx-tint-2": "#e1f4df",
+    "--rx-neutral": "#b6ced5",
+    "--rx-rule": "#efeeeb",
+    "--rx-font-display": "\"Playfair Display\", Georgia, serif",
+    "--rx-font-body": "\"DM Sans\", system-ui, sans-serif",
+    "--rx-heading-weight": "400",
+    "--rx-display-scale": "0.94",
+    "--rx-root-scale": "0.96",
+    "--rx-radius-scale": "0.58",
+    "--rx-reveal-dur": "760ms",
+    "--rx-reveal-delay": "80ms",
+    "--rx-reveal-blur": "10px",
+    "--rx-reveal-ease": "cubic-bezier(.25, 1, .5, 1)",
+    "--rx-card-dur": "560ms",
+    "--rx-letter-stagger": "70ms",
+    "--rx-letter-travel": "90%",
+    "--rx-letter-blur": "18px",
+    "--rx-marquee-dur": "34000ms",
+    "--rx-hover-dur": "200ms",
+    "--rx-color-text": "#0f3e17"
+  },
+  "motion": {
+    "reveal": {
+      "duration": 760,
+      "delay": 80,
+      "blur": 10,
+      "ease": [
+        0.25,
+        1,
+        0.5,
+        1
+      ]
+    },
+    "letterStagger": 70,
+    "marquee": 34000
+  }
+}

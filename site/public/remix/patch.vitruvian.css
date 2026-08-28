@@ -1,0 +1,153 @@
+/* ==================================================================
+   vitruvian — medium patch
+   Scoped to :root[data-rx="vitruvian"]. Additive only; never edits base.
+
+   The tokens carry palette and motion. This layer carries the two things
+   tokens cannot express: the ruled-plate surface (borders where the
+   original had none) and the serif's different optical needs.
+
+   Every decision below is declared as a --p-* custom property with its
+   default in the :root[data-rx] block and referenced in the rules, so the
+   tweak panel can drive it live. A rule that hard-codes its value is a
+   rule the panel cannot reach.
+   ================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap");
+
+:root[data-rx="vitruvian"] {
+  /* surface */
+  --p-rule-alpha: 26%;      /* hairline strength on plates      */
+  --p-rule-width: 1px;
+  --p-chip-alpha: 42%;      /* drawn icon squares                */
+
+  /* type optics — Cormorant is high-contrast old-style and needs its own */
+  --p-display-tracking: -.035em;
+  /* heading tracking is exposed as --rx-heading-tracking (panel); this local
+     name shadowed it and made the panel knob inert */
+  --p-eyebrow-tracking: .18em;
+
+  /* texture */
+  --p-plate-tooth: .32;     /* ruled tooth over the image plates */
+  --p-plate-wash: 46%;      /* how far the sanguine bleeds in    */
+}
+
+/* ---- ruled plates ---------------------------------------------------
+   A Renaissance study is drawn ON something: the plate has an edge. The
+   original's panels float with no border at all, so every surface gets a
+   hairline in the ink colour at low alpha.
+   -------------------------------------------------------------------- */
+:root[data-rx="vitruvian"] .container-box,
+:root[data-rx="vitruvian"] .expertise_card,
+:root[data-rx="vitruvian"] .differentiators_card,
+:root[data-rx="vitruvian"] .testimonials_card,
+:root[data-rx="vitruvian"] .cases_card,
+:root[data-rx="vitruvian"] .navbar_content,
+:root[data-rx="vitruvian"] .footer_content {
+  border: var(--p-rule-width) solid
+    color-mix(in srgb, var(--rx-ink) var(--p-rule-alpha), transparent);
+}
+
+/* the icon chips lose their fill and become drawn squares */
+:root[data-rx="vitruvian"] .icon-box {
+  background: transparent;
+  border: var(--p-rule-width) solid
+    color-mix(in srgb, var(--rx-ink) var(--p-chip-alpha), transparent);
+  color: var(--rx-ink);
+}
+
+/* ---- serif optics --------------------------------------------------- */
+:root[data-rx="vitruvian"] .hero_title { letter-spacing: var(--p-display-tracking); }
+:root[data-rx="vitruvian"] .heading-style-h1,
+:root[data-rx="vitruvian"] .heading-style-h2 {
+  letter-spacing: var(--rx-heading-tracking, -.012em);
+  line-height: 1.08;
+}
+:root[data-rx="vitruvian"] .stats,
+:root[data-rx="vitruvian"] .text_footer { letter-spacing: -.02em; }
+
+/* ---- marginalia -----------------------------------------------------
+   The one flourish: the marquee reads as a ruled caption band rather than
+   a coloured pill, so the parchment stays continuous through it.
+   -------------------------------------------------------------------- */
+/* The glass layer gives .section_specialties a dark ground so the other
+   directions' slate marquee pane can be transparent. vitruvian's marquee is
+   the opposite — a transparent ruled band carrying INK — so it takes the
+   parchment ground back, or the caption goes dark-on-dark. */
+:root[data-rx="vitruvian"] .section_specialties { background-color: transparent; }
+
+:root[data-rx="vitruvian"] .specialties_content {
+  background: transparent;
+  color: var(--rx-ink);
+  border-block: var(--p-rule-width) solid
+    color-mix(in srgb, var(--rx-ink) 30%, transparent);
+  /* the marquee ROLE, not the display face — pinning it here made
+     --rx-font-marquee a dead knob */
+  font-family: var(--rx-font-marquee, var(--rx-font-display));
+  font-style: italic;
+}
+
+/* pills become drawn outlines, not frosted glass */
+:root[data-rx="vitruvian"] .tag-wrap {
+  /* opaque, not translucent: over the darkened hero panel a translucent
+     parchment composites down to 1.28:1 against the ink label. */
+  background: var(--rx-panel);
+  border-color: color-mix(in srgb, var(--rx-ink) 45%, transparent);
+  color: var(--rx-ink);
+  /* no font-size here: brand.css puts .tag-wrap on the body rung and this
+     override reintroduced an x1.08 step at the bottom of the scale. The
+     patch only wants the ink colour and the drawn-label tracking. */
+  letter-spacing: .04em;
+}
+:root[data-rx="vitruvian"] .tag_dot { background: var(--rx-accent); }
+
+/* the plate stand-ins go to ink wash on parchment */
+:root[data-rx="vitruvian"] .hero_plate {
+  /* Dark enough to carry the wordmark. The parchment character lives in the
+     HUE here, not the lightness — an ink wash on toned paper rather than the
+     pale plate this was when it sat below the fold with no type on it. */
+  background:
+    radial-gradient(56% 80% at 72% 14%,
+      color-mix(in srgb, var(--rx-accent) var(--p-plate-wash), transparent) 0%,
+      transparent 62%),
+    linear-gradient(158deg,
+      color-mix(in srgb, var(--rx-slate) 78%, var(--rx-ink)) 0%,
+      var(--rx-ink) 88%);
+}
+:root[data-rx="vitruvian"] .case_plate {
+  background: linear-gradient(200deg, var(--rx-slate) 0%, var(--rx-ink) 100%);
+}
+/* ruled tooth instead of the diagonal weave */
+:root[data-rx="vitruvian"] .hero_plate::after,
+:root[data-rx="vitruvian"] .case_plate::after {
+  opacity: var(--p-plate-tooth);
+  background-image: repeating-linear-gradient(
+    0deg, rgba(255, 246, 226, .10) 0 1px, transparent 1px 7px);
+}
+
+/* monograms: drawn, not filled */
+:root[data-rx="vitruvian"] .author_img.is-monogram {
+  background: transparent;
+  border: var(--p-rule-width) solid
+    color-mix(in srgb, var(--rx-ink) var(--p-chip-alpha), transparent);
+  color: var(--rx-accent);
+  font-family: var(--rx-font-display);
+  font-size: 2.25rem;
+}
+
+/* ---- the highlighted card -------------------------------------------
+   house-calm's accent is a pale citrine, so a card filled with it takes dark
+   ink happily. vitruvian's accent is a dark red chalk (#a63c22): filled, it
+   is a MID tone, and a mid tone fails both ways — dark ink measured 2.4:1,
+   cream 3.8:1. The direction's own brief calls sanguine "the red-chalk
+   accent", so it behaves like one here: the card takes a pale parchment
+   fill and sanguine marks the edge and the chip instead.
+   -------------------------------------------------------------------- */
+:root[data-rx="vitruvian"] .expertise_card.is-yellow,
+:root[data-rx="vitruvian"] .cases_card {
+  background-color: color-mix(in srgb, var(--rx-tint-1) var(--g-tint, 100%), transparent);
+  border-color: color-mix(in srgb, var(--rx-accent) 60%, transparent);
+}
+:root[data-rx="vitruvian"] .expertise_card.is-yellow .icon-box {
+  border-color: color-mix(in srgb, var(--rx-accent) 70%, transparent);
+  color: var(--rx-accent);
+}
+:root[data-rx="vitruvian"] .cases_card { border-width: var(--p-rule-width); border-style: solid; }

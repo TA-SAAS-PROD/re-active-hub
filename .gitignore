@@ -1,0 +1,51 @@
+# dependencies / build output
+site/node_modules/
+site/dist/
+node_modules/
+
+# generated media sources — the 2048px originals the site images were cut from.
+# ~190MB of PNG; the derived JPGs the site actually loads are committed under
+# site/assets/img/. Keep these locally, off the repo.
+card-options/
+card-final/
+hero-options/
+
+# screenshots and QA captures
+shots/
+qa/
+remix/shots/
+remix/directions.png
+
+# Clone-time intermediates and the ORIGINAL TEMPLATE'S OWN SOURCE.
+# This project is a remix of a commercial Webflow template; these directories
+# hold verbatim copies of that template's markup, CSS and assets. They are the
+# vendor's material, not ours, and this repo is public — so they stay out.
+raw/
+extract/
+ref-home2/
+remix/ref/
+*-raw.html
+rendered-1440.html
+site/index.pre-remix.html
+site/assets/styles/base.pre-remix.css
+
+# probe dumps from the clone/QA pipeline
+tokens-*.json
+motion.json
+motion-summary.json
+network.json
+console.json
+surface-map.json
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# clone-time analysis of the ORIGINAL template — its routes and a full
+# teardown of its stack. Not part of this deliverable, and it documents the
+# vendor's site rather than ours. Kept locally.
+ROUTING.md
+TEARDOWN.md
+site/assets/styles/motion.pre-remix.css

@@ -1,0 +1,82 @@
+/* ==================================================================
+   greenhouse — medium patch
+   Scoped to :root[data-rx="greenhouse"]. Additive only.
+
+   Source: design library entry `ease-health`. Two of its rules cannot be
+   expressed as tokens and are the reason the entry looks the way it does:
+     1. "the system deliberately avoids shadows entirely" — depth comes
+        from layered tinted surfaces, so panels get tint, never elevation;
+     2. tags are pill-shaped while cards sit at ~14px — a split radius the
+        single --rx-radius-scale knob cannot produce on its own.
+   ================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap");
+
+/* ---- shadowless, layered ---------------------------------------------
+   The entry's depth model: tinted panel on tinted ground, no elevation.
+   -------------------------------------------------------------------- */
+:root[data-rx="greenhouse"] * { box-shadow: none !important; }
+
+/* the cards stop being greys and become the palette's own tints */
+:root[data-rx="greenhouse"] .expertise_card                { background: var(--rx-accent-2); }
+:root[data-rx="greenhouse"] .expertise_card.is-yellow      { background: var(--rx-accent); }
+:root[data-rx="greenhouse"] .expertise_card.is-neutral-light { background: var(--rx-ground); }
+:root[data-rx="greenhouse"] .expertise_card.is-grey-light   { background: #eef7ec; }
+:root[data-rx="greenhouse"] .expertise_card.is-grey-lighter { background: var(--rx-accent-2); }
+:root[data-rx="greenhouse"] .differentiators_card { background: var(--rx-ground); }
+:root[data-rx="greenhouse"] .testimonials_card    { background: var(--rx-ground); }
+/* Slate Hush is the entry's cool counter-balance — it breaks the green */
+:root[data-rx="greenhouse"] .container-box.is-grey { background: var(--rx-neutral); }
+:root[data-rx="greenhouse"] .cases_card            { background: var(--rx-accent); }
+
+/* ---- split radius ----------------------------------------------------
+   Entry: components ~14px, tags fully pill. --rx-radius-scale gets the
+   cards to 14; the pills are restored to their own geometry here.
+   -------------------------------------------------------------------- */
+:root[data-rx="greenhouse"] .tag-wrap,
+:root[data-rx="greenhouse"] .button,
+:root[data-rx="greenhouse"] .author_img.is-monogram { border-radius: 999px; }
+
+/* ---- serif optics ---------------------------------------------------
+   Playfair is a high-contrast display serif — it runs wide and needs
+   tighter tracking than DM Sans at the 20vw wordmark.
+   -------------------------------------------------------------------- */
+:root[data-rx="greenhouse"] .hero_title { letter-spacing: -.05em; }
+:root[data-rx="greenhouse"] .heading-style-h1,
+:root[data-rx="greenhouse"] .heading-style-h2 {
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+
+/* ---- marquee as a forest band ---------------------------------------- */
+:root[data-rx="greenhouse"] .specialties_content {
+  background: var(--rx-ink);
+  color: var(--rx-panel);
+}
+
+/* ---- pills on the plate ---------------------------------------------- */
+:root[data-rx="greenhouse"] .tag-wrap {
+  background: color-mix(in srgb, var(--rx-ink) 62%, transparent);
+  border-color: color-mix(in srgb, #ffffff 32%, transparent);
+}
+:root[data-rx="greenhouse"] .tag_dot { background: var(--rx-accent); }
+
+/* ---- plate stand-ins: greenhouse light -------------------------------- */
+:root[data-rx="greenhouse"] .hero_plate {
+  background:
+    radial-gradient(58% 84% at 74% 12%, color-mix(in srgb, var(--rx-accent) 88%, transparent) 0%, transparent 64%),
+    radial-gradient(58% 60% at 10% 20%, color-mix(in srgb, var(--rx-neutral) 62%, transparent) 0%, transparent 60%),
+    linear-gradient(158deg, #2c6b34 0%, var(--rx-ink-3) 82%);
+}
+:root[data-rx="greenhouse"] .case_plate {
+  background: linear-gradient(200deg, #2c6b34 0%, var(--rx-ink-3) 100%);
+}
+
+/* monogram: forest ink on sage */
+:root[data-rx="greenhouse"] .author_img.is-monogram {
+  background: var(--rx-accent);
+  color: var(--rx-ink);
+  font-family: var(--rx-font-display);
+}
+
+/* icon chips inherit the forest ink rather than near-black */
+:root[data-rx="greenhouse"] .icon-box { background: var(--rx-ink); }

@@ -1,0 +1,560 @@
+/* ==================================================================
+   BRAND LAYER — Re-Active Hub
+   Loads AFTER base.css, so this is where remix rules that need to win
+   the cascade live, plus the components the re-skin introduced.
+
+   Nothing here changes the template's geometry. The pills, plates and
+   monograms occupy exactly the boxes the original's images occupied,
+   so the verified layout still holds.
+   ================================================================== */
+
+/* ---- token application ---------------------------------------------
+   The only path by which the --rx-* type knobs reach base.css. These sit
+   here rather than in remix-tokens.css because base.css would otherwise
+   win on source order.
+
+   Type is split by ROLE, not by element, so every surface of the page has
+   its own family knob and can be changed without touching the others:
+     display  hero wordmark + h1/h2 + the big stat numbers
+     body     paragraphs, cards, everything unclassified
+     nav      the navbar links and dropdown
+     footer   the footer column links and the giant footer wordmark
+     button   every CTA
+     brand    the logo lockup
+   Each falls back to body or display, so an unset role never breaks.
+   -------------------------------------------------------------------- */
+body,
+.text-base, .text-lg, .text-xl, .text-2xl,
+.max-text, .cases-text, .expertise_wrap, .differentiators_wrap {
+  font-family: var(--rx-font-body);
+}
+
+h1, h2, h3,
+.heading-style-h1, .heading-style-h2,
+.hero_title {
+  font-family: var(--rx-font-display);
+}
+.heading-style-h1, .heading-style-h2 {
+  font-weight: var(--rx-heading-weight);
+  letter-spacing: var(--rx-heading-tracking, -.02em);
+}
+
+.stats { font-family: var(--rx-font-stats, var(--rx-font-display)); }
+
+.nav_links, .nav_dropdown-link, .text-block {
+  font-family: var(--rx-font-nav, var(--rx-font-body));
+}
+
+.footer-link, .footer_content, .text_footer {
+  font-family: var(--rx-font-footer, var(--rx-font-body));
+}
+.text_footer { font-family: var(--rx-font-footer-display, var(--rx-font-display)); }
+
+.button, .button-text {
+  font-family: var(--rx-font-button, var(--rx-font-body));
+  font-weight: var(--rx-button-weight, 400);
+}
+
+.brand_word { font-family: var(--rx-font-brand, var(--rx-font-display)); }
+
+.tag-wrap, .specialties_content {
+  font-family: var(--rx-font-body);
+}
+.specialties_content { font-family: var(--rx-font-marquee, var(--rx-font-body)); }
+
+/* size + weight, per role */
+.text-base  { font-size: var(--rx-size-body, 1rem); }
+.stats      { font-size: var(--rx-size-stats, 3.75rem); }
+.specialties_content { font-size: var(--rx-size-marquee, 2.25rem); }
+.footer-link { font-size: var(--rx-size-footer-link, 1rem); }
+.nav_links   { font-size: var(--rx-size-nav, 1rem); }
+
+/* The wordmark scale knob multiplies whichever base the hero variant uses.
+   home-3's stacked hero was 20vw; the home-2 hero we adopted is 10vw, and
+   steps up at the two lower breakpoints because the words stack there. */
+.hero_title { font-size: calc(20vw * var(--rx-display-scale)); }
+.hero_title.is-home-two { font-size: calc(10vw * var(--rx-display-scale)); }
+@media screen and (max-width: 991px) {
+  .hero_title.is-home-two { font-size: calc(15vw * var(--rx-display-scale)); }
+}
+@media screen and (max-width: 479px) {
+  .hero_title.is-home-two { font-size: calc(20vw * var(--rx-display-scale)); }
+}
+
+/* ---- logo lockup ----------------------------------------------------
+   PLACEHOLDER MARK. The wordmark is set in the site's display face and
+   the glyph is a plain geometric arc — it stands in for a commissioned
+   identity, it is not one. Inline rather than an <img src="*.svg">
+   because an SVG loaded as an image cannot use the page's webfont.
+   -------------------------------------------------------------------- */
+.brand_lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--rx-ink);
+  flex: none;
+}
+.brand_mark {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: none;
+  color: var(--rx-accent-mark, var(--rx-ink));
+}
+.brand_word {
+  /* family comes from the role block above (--rx-font-brand); redeclaring it
+     here silently won on source order and pinned the logo to the display face */
+  /* 1.25rem = .text-xl, an existing rung. An earlier 1.125rem put a new step
+     at x1.11 from .text-xl and x1.13 from .text-base, which is not a step —
+     it just blurred the small end of the scale. */
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -.03em;
+  white-space: nowrap;
+  line-height: 1;
+}
+.brand_word-hub {
+  font-weight: 400;
+  opacity: .55;
+  margin-left: .3em;
+}
+.brand_lockup.is-footer { color: var(--rx-panel); }
+
+/* The tag pills were removed with the hero redesign; their styling went
+   with them. Reinstate from git if a labelled pill returns. */
+
+/* ---- photographic plates --------------------------------------------
+   The photo is not painted flat: it sits on the direction's own coloured
+   gradient with mix-blend-mode: luminosity, so only its LUMINANCE survives
+   and the hue comes from whatever palette is active. One photograph
+   therefore lands in all three directions without three edits, and a
+   replacement photo grades itself the same way.
+
+   Order inside the plate: gradient (element) -> photo (::before) ->
+   tooth (::after). The panel's scrim sits above all of it.
+   Photos: Pexels, credited in remix/ASSETS.md.
+   -------------------------------------------------------------------- */
+.hero_plate,
+.case_plate {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  isolation: isolate;          /* keep the blend inside the plate */
+  background:
+    radial-gradient(58% 84% at 74% 12%, color-mix(in srgb, var(--rx-accent) 82%, transparent) 0%, transparent 66%),
+    radial-gradient(60% 62% at 10% 20%, color-mix(in srgb, var(--rx-accent-2) 52%, transparent) 0%, transparent 62%),
+    linear-gradient(158deg,
+      color-mix(in srgb, var(--rx-slate) 62%, var(--rx-ink)) 0%,
+      var(--rx-ink) 78%);
+}
+
+.hero_plate::before,
+.case_plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-position: var(--p-photo-x, 50%) var(--p-photo-y, 42%);
+  background-size: cover;
+  background-repeat: no-repeat;
+  mix-blend-mode: var(--p-photo-blend, luminosity);
+  opacity: var(--p-photo-opacity, 1);
+  filter:
+    grayscale(var(--p-photo-gray, 1))
+    contrast(var(--p-photo-contrast, 1.08))
+    brightness(var(--p-photo-bright, .96));
+}
+.hero_plate::before  { background-image: image-set(url("../img/hero.jpg") 1x); }
+.case_plate::before  { background-image: image-set(url("../img/clinic.jpg") 1x); }
+
+@media screen and (max-width: 767px) {
+  .hero_plate::before { background-image: image-set(url("../img/hero-800.jpg") 1x); }
+  .case_plate::before { background-image: image-set(url("../img/clinic-700.jpg") 1x); }
+}
+
+/* the tooth rides above the photo so it reads as a treated surface */
+.hero_plate::after,
+.case_plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: .5;
+  background-image: repeating-linear-gradient(
+    122deg,
+    rgba(255, 255, 255, .05) 0 2px,
+    transparent 2px 9px
+  );
+}
+
+/* ---- testimonial monograms -----------------------------------------
+   The original used patient-style photographs. Replaced with initials
+   rather than substitute stock faces, which would imply these are
+   photographs of real patients.
+   -------------------------------------------------------------------- */
+.author_img.is-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rx-accent);
+  color: var(--rx-ink);
+  font-family: var(--rx-font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.02em;
+  user-select: none;
+}
+
+/* ---- accessibility --------------------------------------------------
+   The template had no visible focus style. Visitors reading one-handed
+   in discomfort are exactly who benefits from keyboard affordances.
+   -------------------------------------------------------------------- */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--rx-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.section_footer :where(a, button):focus-visible,
+.section_cases :where(a, button):focus-visible {
+  outline-color: var(--rx-panel);
+}
+
+/* ---- misc ------------------------------------------------------------ */
+/* eight letters now, not seven — keep the wordmark on one line */
+.hero_title { flex-wrap: nowrap; }
+
+/* The original's pills were fixed-width images; ours are as wide as their
+   text, so all four collide inside the short mobile hero frame. Two is
+   the most that frame holds without overlap. */
+@media screen and (max-width: 767px) {
+  .tag-wrap.is-visual-three,
+  .tag-wrap.is-visual-four { display: none; }
+  .tag-wrap { font-size: .8125rem; padding: .45rem .8rem .45rem .5rem; } /* mobile only */
+  .tag_dot { width: 1.125rem; height: 1.125rem; }
+}
+
+
+/* ==================================================================
+   BACK TO TOP · CONTACT CHIPS · BOOKING MODAL
+   All of it is driven by the existing token vocabulary, so it
+   re-skins with the direction and responds to the Glass knobs
+   exactly as the rest of the page does. Two new knobs only:
+   --rx-totop-size and --g-tint-modal.
+   ================================================================== */
+
+/* ---- back to top ---------------------------------------------------
+   Fixed bottom-right, above the footer chips so the two never collide.
+   Kept out of the tab order while invisible via [hidden] in the markup. */
+.to-top {
+  position: fixed;
+  right: clamp(1rem, 2.2vw, 2rem);
+  bottom: clamp(1rem, 2.2vw, 2rem);
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: var(--rx-totop-size, 3rem);
+  height: var(--rx-totop-size, 3rem);
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  color: var(--rx-panel);
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--rx-ink) var(--g-tint-btn, 56%), transparent);
+  -webkit-backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate));
+  backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, var(--g-edge-alpha, .3)),
+    0 var(--g-shadow-y, 6px) var(--g-shadow-blur, 18px) rgba(0, 0, 0, var(--g-shadow-alpha, .15));
+  opacity: 0;
+  transform: translateY(.5rem);
+  transition: opacity var(--rx-hover-dur, 260ms) ease, transform var(--rx-hover-dur, 260ms) ease;
+}
+.to-top.is-in { opacity: 1; transform: none; }
+.to-top:hover { transform: translateY(-2px); }
+.to-top svg { width: 45%; height: 45%; }
+
+/* ---- contact chips -------------------------------------------------- */
+/* .text-wrap.is-footer is a non-wrapping flex row and the wordmark fills
+   it, so without forcing a break these get squeezed into a ~126px column
+   beside the type instead of sitting under it. */
+.text-wrap.is-footer { flex-wrap: wrap; }
+.text-wrap.is-footer { position: relative; }
+.footer_contact-actions {
+  position: absolute;
+  right: var(--rx-footer-chips-right, 5.5rem);
+  bottom: var(--rx-footer-chips-lift, 7rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: flex-end;
+}
+.contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1.2rem;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--rx-font-button, var(--rx-font-body));
+  font-size: calc(var(--rx-size-footer-link, 1rem) * var(--rx-footer-chips-scale, 1.2));
+  line-height: 1.2;
+  color: var(--rx-panel);
+  border-radius: calc(var(--rx-radius-scale, 1) * 2rem);
+  background-color: color-mix(in srgb, var(--rx-ink) var(--g-tint-btn, 56%), transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, var(--g-edge-alpha, .3));
+  transition: transform var(--rx-hover-dur, 260ms) ease, background-color var(--rx-hover-dur, 260ms) ease;
+}
+.contact-chip:hover { transform: translateY(-2px); }
+.contact-chip.is-whatsapp {
+  color: var(--rx-ink);
+  background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint-btn-hero, 88%), transparent);
+}
+.contact-chip.is-ghost {
+  color: var(--rx-ink);
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--rx-ink) 30%, transparent);
+}
+.contact-chip_icon {
+  width: calc(1.125rem * var(--rx-footer-chips-scale, 1.2));
+  height: calc(1.125rem * var(--rx-footer-chips-scale, 1.2));
+  flex: none;
+}
+
+/* ---- booking modal -------------------------------------------------- */
+html.is-modal-open { overflow: hidden; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.modal.is-in { opacity: 1; }
+.modal[hidden] { display: none; }
+
+.modal_scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.modal_dialog {
+  position: relative;
+  width: min(34rem, 100%);
+  max-height: min(88vh, 46rem);
+  overflow-y: auto;
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  color: var(--rx-ink);
+  border-radius: calc(var(--rx-radius-scale, 1) * 1.5rem);
+  background-color: color-mix(in srgb, var(--rx-panel) var(--g-tint-modal, 96%), transparent);
+  -webkit-backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate));
+  backdrop-filter: blur(var(--g-blur)) saturate(var(--g-saturate));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, var(--g-edge-alpha, .3)),
+    0 24px 60px rgba(0, 0, 0, .35);
+  transform: translateY(.75rem) scale(.985);
+  transition: transform 240ms cubic-bezier(.22, 1, .36, 1);
+}
+.modal.is-in .modal_dialog { transform: none; }
+
+.modal_close {
+  position: absolute;
+  top: .875rem;
+  right: .875rem;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  color: var(--rx-ink);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--rx-ink) 8%, transparent);
+}
+.modal_close:hover { background: color-mix(in srgb, var(--rx-ink) 16%, transparent); }
+.modal_close svg { width: 1.125rem; height: 1.125rem; }
+
+.modal_title {
+  margin: 0 2.5rem .5rem 0;
+  font-family: var(--rx-font-display);
+  font-weight: var(--rx-heading-weight, 600);
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: var(--rx-heading-tracking, -.02em);
+}
+.modal_lede {
+  margin: 0 0 1.5rem;
+  color: var(--rx-ink-2);
+  font-size: var(--rx-size-body, 1rem);
+  line-height: 1.5;
+}
+
+.modal_form { display: grid; gap: 1rem; }
+
+.field { display: grid; gap: .375rem; margin: 0; padding: 0; border: 0; }
+.field_label {
+  font-family: var(--rx-font-body);
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--rx-ink-2);
+}
+.field_input {
+  width: 100%;
+  padding: .75rem .875rem;
+  font-family: var(--rx-font-body);
+  font-size: 1rem;
+  color: var(--rx-ink);
+  background: color-mix(in srgb, var(--rx-panel) 70%, #fff);
+  border: 1px solid color-mix(in srgb, var(--rx-ink) 22%, transparent);
+  border-radius: calc(var(--rx-radius-scale, 1) * .75rem);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.field_input:focus {
+  outline: none;
+  border-color: var(--rx-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rx-accent) 22%, transparent);
+}
+.field_input.is-invalid { border-color: var(--rx-accent); }
+.field_error:empty { display: none; }
+.field_error {
+  font-size: .8125rem;
+  color: var(--rx-accent);
+}
+
+.slot_row { display: flex; flex-wrap: wrap; gap: .5rem; }
+.slot {
+  flex: 1 1 auto;
+  padding: .625rem .875rem;
+  cursor: pointer;
+  font-family: var(--rx-font-body);
+  font-size: .9375rem;
+  white-space: nowrap;
+  color: var(--rx-ink);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--rx-ink) 24%, transparent);
+  border-radius: calc(var(--rx-radius-scale, 1) * 2rem);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.slot:hover { border-color: color-mix(in srgb, var(--rx-ink) 45%, transparent); }
+.slot.is-on {
+  color: var(--rx-panel);
+  background: var(--rx-ink);
+  border-color: var(--rx-ink);
+}
+.slot:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rx-accent) 28%, transparent);
+}
+
+.button.is-submit { justify-content: center; width: 100%; margin-top: .25rem; }
+
+.modal_body.is-done { text-align: center; }
+.modal_body.is-done .modal_title { margin-right: 0; }
+.modal_tick {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: .5rem auto 1.25rem;
+  color: var(--rx-panel);
+  border-radius: 999px;
+  background: var(--rx-accent);
+}
+.modal_tick svg { width: 1.75rem; height: 1.75rem; }
+.modal_done-actions { display: flex; flex-wrap: wrap; gap: .625rem; justify-content: center; }
+
+@media screen and (max-width: 767px) {
+  .footer_contact-actions { justify-content: flex-start; }
+  .slot { flex: 1 1 100%; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .to-top, .modal, .modal_dialog, .contact-chip { transition: none; }
+}
+
+
+/* ==================================================================
+   "WHAT WE TREAT" CARD PHOTOGRAPHS
+   The photo sits BETWEEN the glass bend layer and the glass edge:
+   glass.css puts ::before (bend) at z-index 0 and ::after (edge) at 1,
+   and .expertise_card > * at 2. A child at z-index 0 declared after the
+   pseudo-element paints over the bend but under the edge, so the liquid
+   rim survives while the photograph replaces the flat tint.
+
+   An opaque photo necessarily hides the backdrop blur on these five
+   cards — a pane cannot refract through a photograph. The edge highlight
+   is what keeps them reading as part of the same glass set.
+
+   The scrim is dark only where the type is: heavy at the top behind the
+   title, light through the middle where the picture does the work, heavy
+   again at the bottom behind the body copy and the icon. Same principle
+   as the hero. All four stops are knobs.
+   ================================================================== */
+.expertise_card.has-photo > .card_photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background-image: var(--card-img);
+  background-size: cover;
+  background-position: var(--card-photo-x, 50%) var(--card-photo-y, 50%);
+  background-repeat: no-repeat;
+  filter: saturate(var(--card-photo-sat, 1)) contrast(var(--card-photo-contrast, 1));
+}
+.expertise_card.has-photo > .card_photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, var(--card-scrim-top, .58)) 0%,
+    rgba(0, 0, 0, var(--card-scrim-mid, .16)) 38%,
+    rgba(0, 0, 0, var(--card-scrim-mid, .16)) 55%,
+    rgba(0, 0, 0, var(--card-scrim-bottom, .82)) 100%);
+}
+/* the copy is cream on a photograph now, not ink on a tint */
+.expertise_card.has-photo,
+.expertise_card.has-photo .text-2xl,
+.expertise_card.has-photo .text-base,
+.expertise_card.has-photo .icon-box { color: var(--rx-panel); }
+.expertise_card.has-photo .icon-box {
+  background-color: color-mix(in srgb, var(--rx-ink) var(--g-tint-btn, 56%), transparent);
+}
+
+/* The desktop card is 436x408 and its copy sits near the bottom, so a
+   gradient that stays light through the middle works. The mobile card is
+   334x196 — the body copy lands at 32% of its height, inside that light
+   band — so deepening the bottom stop could not reach it (it measured an
+   unchanged 3.02:1). A short card needs a simpler, heavier fall. */
+@media screen and (max-width: 767px) {
+  .expertise_card.has-photo > .card_photo::after {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, var(--card-scrim-top-sm, .60)) 0%,
+      rgba(0, 0, 0, var(--card-scrim-mid-sm, .48)) 50%,
+      rgba(0, 0, 0, var(--card-scrim-bottom-sm, .78)) 100%);
+  }
+}
+
+.card_photo.is-back-neck { --card-img: image-set(url("../img/cards/back-neck.jpg") 1x); }
+.card_photo.is-sports    { --card-img: image-set(url("../img/cards/sports.jpg") 1x); }
+.card_photo.is-postsurg  { --card-img: image-set(url("../img/cards/postsurg.jpg") 1x); }
+.card_photo.is-posture   { --card-img: image-set(url("../img/cards/posture.jpg") 1x); }
+.card_photo.is-home      { --card-img: image-set(url("../img/cards/home.jpg") 1x); }
+
+@media screen and (max-width: 767px) {
+  .card_photo.is-back-neck { --card-img: image-set(url("../img/cards/back-neck-560.jpg") 1x); }
+  .card_photo.is-sports    { --card-img: image-set(url("../img/cards/sports-560.jpg") 1x); }
+  .card_photo.is-postsurg  { --card-img: image-set(url("../img/cards/postsurg-560.jpg") 1x); }
+  .card_photo.is-posture   { --card-img: image-set(url("../img/cards/posture-560.jpg") 1x); }
+  .card_photo.is-home      { --card-img: image-set(url("../img/cards/home-560.jpg") 1x); }
+}

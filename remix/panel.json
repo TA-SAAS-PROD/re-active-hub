@@ -1,0 +1,998 @@
+{
+  "title": "Vitruvian",
+  "slug": "vitruvian",
+  "fontOptions": [
+    "Cormorant Garamond, Georgia, serif",
+    "Playfair Display, Georgia, serif",
+    "Fraunces, Georgia, serif",
+    "Instrument Serif, Georgia, serif",
+    "Newsreader, Georgia, serif",
+    "Libre Baskerville, Georgia, serif",
+    "DM Sans, system-ui, sans-serif",
+    "Inter Tight, system-ui, sans-serif",
+    "Archivo, system-ui, sans-serif",
+    "Work Sans, system-ui, sans-serif",
+    "Manrope, system-ui, sans-serif",
+    "Space Grotesk, system-ui, sans-serif",
+    "JetBrains Mono, ui-monospace, monospace",
+    "IBM Plex Mono, ui-monospace, monospace"
+  ],
+  "presets": {
+    "as picked": {},
+    "faded plate": {
+      "--rx-ground": "#e6dcc6",
+      "--p-rule-alpha": "12%",
+      "--p-plate-wash": "22%",
+      "--p-plate-tooth": 0.18,
+      "--p-photo-opacity": 0.7
+    },
+    "hard engraving": {
+      "--p-rule-alpha": "52%",
+      "--p-rule-width": "1.5px",
+      "--rx-radius-scale": 0,
+      "--p-plate-tooth": 0.55,
+      "--p-photo-contrast": 1.35
+    },
+    "full colour photo": {
+      "--p-photo-blend": "normal",
+      "--p-photo-gray": 0,
+      "--p-photo-contrast": 1,
+      "--p-photo-bright": 1
+    },
+    "quiet motion": {
+      "--rx-reveal-dur": "700ms",
+      "--rx-reveal-blur": "0px",
+      "--rx-letter-stagger": "40ms",
+      "--rx-marquee-dur": "80000ms"
+    },
+    "all sans": {
+      "--rx-font-display": "Archivo, system-ui, sans-serif",
+      "--rx-font-body": "DM Sans, system-ui, sans-serif",
+      "--rx-font-footer-display": "Archivo, system-ui, sans-serif",
+      "--rx-font-brand": "Archivo, system-ui, sans-serif"
+    },
+    "solid (glass off)": {
+      "--g-bend": "none",
+      "--g-tint": "100%",
+      "--g-tint-dark": "100%",
+      "--g-tint-btn": "100%",
+      "--g-blur": "0px",
+      "--g-ambient": 0,
+      "--g-edge-alpha": 0,
+      "--g-glow-white": 0,
+      "--g-noise": 0,
+      "--g-tint-shell": "100%",
+      "--g-tint-hero": "100%"
+    },
+    "heavy frost": {
+      "--g-bend": "url(#rx-bend-lg)",
+      "--g-blur": "34px",
+      "--g-tint": "18%",
+      "--g-tint-dark": "30%",
+      "--g-tint-btn": "38%",
+      "--g-saturate": 2.2,
+      "--g-edge-size": "4px",
+      "--g-edge-alpha": 0.5,
+      "--g-glow-white": 0.22,
+      "--g-ambient": 1.1,
+      "--g-tint-shell": "4%",
+      "--g-tint-hero": "20%"
+    },
+    "upstream defaults": {
+      "--g-bend": "url(#rx-bend-lg)",
+      "--g-edge-size": "2px",
+      "--g-edge-alpha": 0.35,
+      "--g-glow-white": 0.1,
+      "--g-glow-spread": "24px",
+      "--g-glow-dark": 0.15
+    }
+  },
+  "knobs": [
+    {
+      "id": "--rx-accent",
+      "label": "Sanguine",
+      "group": "Color",
+      "type": "color",
+      "default": "#a63c22",
+      "note": "the red-chalk accent"
+    },
+    {
+      "id": "--rx-ground",
+      "label": "Parchment",
+      "group": "Color",
+      "type": "color",
+      "default": "#ddd0b4"
+    },
+    {
+      "id": "--rx-panel",
+      "label": "Plate",
+      "group": "Color",
+      "type": "color",
+      "default": "#f2e9d8"
+    },
+    {
+      "id": "--rx-color-text",
+      "label": "Text ink",
+      "group": "Color",
+      "type": "color",
+      "default": "#2e2013"
+    },
+    {
+      "id": "--rx-slate",
+      "label": "Umber",
+      "group": "Color",
+      "type": "color",
+      "default": "#4a3826",
+      "note": "footer panel + plate ground"
+    },
+    {
+      "id": "--rx-accent-2",
+      "label": "Cool fill",
+      "group": "Color",
+      "type": "color",
+      "default": "#8c9aa6"
+    },
+    {
+      "id": "--rx-solid",
+      "label": "Button solid",
+      "group": "Color",
+      "type": "color",
+      "default": "#2e2013"
+    },
+    {
+      "id": "--rx-font-display",
+      "label": "Display face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "Cormorant Garamond, Georgia, serif",
+      "note": "hero wordmark + all headings"
+    },
+    {
+      "id": "--rx-font-body",
+      "label": "Body face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "DM Sans, system-ui, sans-serif"
+    },
+    {
+      "id": "--rx-font-nav",
+      "label": "Nav face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "DM Sans, system-ui, sans-serif"
+    },
+    {
+      "id": "--rx-font-button",
+      "label": "Button face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "DM Sans, system-ui, sans-serif"
+    },
+    {
+      "id": "--rx-font-footer",
+      "label": "Footer face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "DM Sans, system-ui, sans-serif"
+    },
+    {
+      "id": "--rx-font-footer-display",
+      "label": "Footer wordmark",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "Cormorant Garamond, Georgia, serif"
+    },
+    {
+      "id": "--rx-font-stats",
+      "label": "Stat numbers",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "Cormorant Garamond, Georgia, serif"
+    },
+    {
+      "id": "--rx-font-marquee",
+      "label": "Marquee face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "Cormorant Garamond, Georgia, serif"
+    },
+    {
+      "id": "--rx-font-brand",
+      "label": "Logo face",
+      "group": "Type",
+      "type": "select",
+      "font": true,
+      "default": "Cormorant Garamond, Georgia, serif"
+    },
+    {
+      "id": "--rx-display-scale",
+      "label": "Wordmark size",
+      "group": "Type size",
+      "type": "number",
+      "default": 1.06,
+      "min": 0.5,
+      "max": 1.3,
+      "step": 0.01
+    },
+    {
+      "id": "--p-display-tracking",
+      "label": "Wordmark tracking",
+      "group": "Type size",
+      "type": "length",
+      "default": "-0.035em",
+      "min": -0.09,
+      "max": 0.02,
+      "step": 0.005,
+      "unit": "em"
+    },
+    {
+      "id": "--rx-heading-weight",
+      "label": "Heading weight",
+      "group": "Type size",
+      "type": "select",
+      "options": [
+        "300",
+        "400",
+        "500",
+        "600",
+        "700"
+      ],
+      "default": "300"
+    },
+    {
+      "id": "--rx-heading-tracking",
+      "label": "Heading tracking",
+      "group": "Type size",
+      "type": "length",
+      "default": "-0.012em",
+      "min": -0.06,
+      "max": 0.04,
+      "step": 0.004,
+      "unit": "em"
+    },
+    {
+      "id": "--rx-size-body",
+      "label": "Body size",
+      "group": "Type size",
+      "type": "length",
+      "default": "1rem",
+      "min": 0.75,
+      "max": 1.5,
+      "step": 0.01,
+      "unit": "rem"
+    },
+    {
+      "id": "--rx-size-nav",
+      "label": "Nav size",
+      "group": "Type size",
+      "type": "length",
+      "default": "1rem",
+      "min": 0.75,
+      "max": 1.4,
+      "step": 0.01,
+      "unit": "rem"
+    },
+    {
+      "id": "--rx-size-stats",
+      "label": "Stat size",
+      "group": "Type size",
+      "type": "length",
+      "default": "3.75rem",
+      "min": 1.5,
+      "max": 7,
+      "step": 0.05,
+      "unit": "rem"
+    },
+    {
+      "id": "--rx-size-marquee",
+      "label": "Marquee size",
+      "group": "Type size",
+      "type": "length",
+      "default": "2.25rem",
+      "min": 1,
+      "max": 4,
+      "step": 0.05,
+      "unit": "rem"
+    },
+    {
+      "id": "--rx-size-footer-link",
+      "label": "Footer link size",
+      "group": "Type size",
+      "type": "length",
+      "default": "1rem",
+      "min": 0.75,
+      "max": 1.4,
+      "step": 0.01,
+      "unit": "rem"
+    },
+    {
+      "id": "--rx-button-weight",
+      "label": "Button weight",
+      "group": "Type size",
+      "type": "select",
+      "options": [
+        "300",
+        "400",
+        "500",
+        "600",
+        "700"
+      ],
+      "default": "400"
+    },
+    {
+      "id": "--rx-root-scale",
+      "label": "Density",
+      "group": "Space",
+      "type": "number",
+      "default": 1.02,
+      "min": 0.85,
+      "max": 1.15,
+      "step": 0.01,
+      "note": "multiplies the fluid root — moves every rem at once"
+    },
+    {
+      "id": "--rx-radius-scale",
+      "label": "Corner radius",
+      "group": "Space",
+      "type": "number",
+      "default": 0.48,
+      "min": 0,
+      "max": 1.2,
+      "step": 0.02
+    },
+    {
+      "id": "--p-rule-alpha",
+      "label": "Hairline strength",
+      "group": "Surface",
+      "type": "length",
+      "default": "20%",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--p-rule-width",
+      "label": "Hairline weight",
+      "group": "Surface",
+      "type": "length",
+      "default": "1px",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px"
+    },
+    {
+      "id": "--p-plate-tooth",
+      "label": "Ruled tooth",
+      "group": "Surface",
+      "type": "number",
+      "default": 0.32,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--p-plate-wash",
+      "label": "Sanguine bleed",
+      "group": "Surface",
+      "type": "length",
+      "default": "42%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--p-scrim-top",
+      "label": "Scrim top",
+      "group": "Surface",
+      "type": "number",
+      "default": 0.34,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--p-scrim-bottom",
+      "label": "Scrim bottom",
+      "group": "Surface",
+      "type": "number",
+      "default": 0.78,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--p-scrim-band",
+      "label": "Scrim type band",
+      "group": "Surface",
+      "type": "number",
+      "default": 0.42,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--p-scrim-mid",
+      "label": "Scrim middle",
+      "group": "Surface",
+      "type": "number",
+      "default": 0.4,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--p-scrim-band-start",
+      "label": "Band starts at",
+      "group": "Surface",
+      "type": "length",
+      "default": "34%",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "id": "--p-scrim-band-end",
+      "label": "Band ends at",
+      "group": "Surface",
+      "type": "length",
+      "default": "66%",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "id": "--p-photo-opacity",
+      "label": "Photo presence",
+      "group": "Photo",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 1,
+      "step": 0.02,
+      "note": "0 hides the photograph and leaves the palette gradient"
+    },
+    {
+      "id": "--p-photo-blend",
+      "label": "Photo blend",
+      "group": "Photo",
+      "type": "select",
+      "options": [
+        "luminosity",
+        "normal",
+        "multiply",
+        "overlay",
+        "soft-light",
+        "hard-light"
+      ],
+      "default": "luminosity",
+      "note": "luminosity = duotone in the direction's palette"
+    },
+    {
+      "id": "--p-photo-gray",
+      "label": "Desaturate",
+      "group": "Photo",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 1,
+      "step": 0.05
+    },
+    {
+      "id": "--p-photo-contrast",
+      "label": "Photo contrast",
+      "group": "Photo",
+      "type": "number",
+      "default": 1.08,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.02
+    },
+    {
+      "id": "--p-photo-bright",
+      "label": "Photo brightness",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.96,
+      "min": 0.4,
+      "max": 1.6,
+      "step": 0.02
+    },
+    {
+      "id": "--p-photo-y",
+      "label": "Photo focus Y",
+      "group": "Photo",
+      "type": "length",
+      "default": "42%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--rx-reveal-dur",
+      "label": "Reveal duration",
+      "group": "Motion",
+      "type": "length",
+      "default": "900ms",
+      "min": 0,
+      "max": 2400,
+      "step": 50,
+      "unit": "ms"
+    },
+    {
+      "id": "--rx-reveal-blur",
+      "label": "Reveal blur",
+      "group": "Motion",
+      "type": "length",
+      "default": "24px",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "id": "--rx-letter-stagger",
+      "label": "Wordmark stagger",
+      "group": "Motion",
+      "type": "length",
+      "default": "140ms",
+      "min": 0,
+      "max": 300,
+      "step": 10,
+      "unit": "ms"
+    },
+    {
+      "id": "--rx-marquee-dur",
+      "label": "Marquee speed",
+      "group": "Motion",
+      "type": "length",
+      "default": "56000ms",
+      "min": 8000,
+      "max": 90000,
+      "step": 2000,
+      "unit": "ms",
+      "note": "higher is slower"
+    },
+    {
+      "id": "--rx-hover-dur",
+      "label": "Hover speed",
+      "group": "Motion",
+      "type": "length",
+      "default": "320ms",
+      "min": 0,
+      "max": 600,
+      "step": 20,
+      "unit": "ms"
+    },
+    {
+      "id": "--g-bend",
+      "label": "Refraction",
+      "group": "Glass",
+      "type": "select",
+      "options": [
+        "url(#rx-bend-sm)",
+        "url(#rx-bend-md)",
+        "url(#rx-bend-lg)",
+        "none"
+      ],
+      "labels": [
+        "subtle (80)",
+        "medium (140)",
+        "strong (200, upstream)",
+        "off — plain frost"
+      ],
+      "default": "url(#rx-bend-md)",
+      "note": "the feDisplacementMap that warps the backdrop. Set to off and it is ordinary frosted glass."
+    },
+    {
+      "id": "--g-blur",
+      "label": "Blur",
+      "group": "Glass",
+      "type": "length",
+      "default": "14px",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "id": "--g-saturate",
+      "label": "Saturation",
+      "group": "Glass",
+      "type": "number",
+      "default": 1.7,
+      "min": 0.5,
+      "max": 3,
+      "step": 0.05
+    },
+    {
+      "id": "--g-brightness",
+      "label": "Brightness",
+      "group": "Glass",
+      "type": "number",
+      "default": 1.05,
+      "min": 0.7,
+      "max": 1.4,
+      "step": 0.01
+    },
+    {
+      "id": "--g-tint",
+      "label": "Pane opacity",
+      "group": "Glass",
+      "type": "length",
+      "default": "34%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "note": "light panes — dark ink passes at ANY value here (10.3:1 even fully clear)"
+    },
+    {
+      "id": "--g-tint-shell",
+      "label": "Pane opacity (section shells)",
+      "group": "Glass",
+      "type": "length",
+      "default": "10%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "note": "the outer panels that CONTAIN the cards. Keep low or the two tints stack and mute the refraction."
+    },
+    {
+      "id": "--g-tint-hero",
+      "label": "Pane opacity (hero bar)",
+      "group": "Glass",
+      "type": "length",
+      "default": "34%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "note": "the bar over the photograph — the one place the refraction really reads"
+    },
+    {
+      "id": "--g-tint-dark",
+      "label": "Pane opacity (dark)",
+      "group": "Glass",
+      "type": "length",
+      "default": "44%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "note": "footer + marquee; safe this low only because those sections have their own dark ground"
+    },
+    {
+      "id": "--g-tint-btn",
+      "label": "Pane opacity (buttons)",
+      "group": "Glass",
+      "type": "length",
+      "default": "56%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--g-tint-btn-hero",
+      "label": "Glass tint · hero CTA",
+      "group": "Glass",
+      "type": "length",
+      "default": "88%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--g-tint-btn-modal",
+      "label": "Glass tint · modal CTA",
+      "group": "Glass",
+      "type": "length",
+      "default": "94%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--g-dark-ground",
+      "label": "Dark section ground",
+      "group": "Glass",
+      "type": "length",
+      "default": "82%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "note": "what lets the footer and marquee panes be transparent at all"
+    },
+    {
+      "id": "--g-edge-size",
+      "label": "Edge size",
+      "group": "Glass",
+      "type": "length",
+      "default": "2px",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "note": "upstream steps: 1 xs, 2 sm, 3 md, 4 lg, 6 xl, 8 2xl"
+    },
+    {
+      "id": "--g-edge-alpha",
+      "label": "Edge light",
+      "group": "Glass",
+      "type": "number",
+      "default": 0.35,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "note": "both corners lit — that symmetry is what makes the rim read liquid"
+    },
+    {
+      "id": "--g-glow-white",
+      "label": "Halo",
+      "group": "Glass",
+      "type": "number",
+      "default": 0.1,
+      "min": 0,
+      "max": 0.4,
+      "step": 0.01
+    },
+    {
+      "id": "--g-glow-spread",
+      "label": "Halo spread",
+      "group": "Glass",
+      "type": "length",
+      "default": "24px",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "id": "--g-glow-dark",
+      "label": "Contact shadow",
+      "group": "Glass",
+      "type": "number",
+      "default": 0.15,
+      "min": 0,
+      "max": 0.5,
+      "step": 0.01
+    },
+    {
+      "id": "--g-shadow-alpha",
+      "label": "Drop shadow",
+      "group": "Glass",
+      "type": "number",
+      "default": 0.18,
+      "min": 0,
+      "max": 0.6,
+      "step": 0.01
+    },
+    {
+      "id": "--g-shadow-y",
+      "label": "Shadow drop",
+      "group": "Glass",
+      "type": "length",
+      "default": "24px",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "id": "--g-shadow-blur",
+      "label": "Shadow blur",
+      "group": "Glass",
+      "type": "length",
+      "default": "60px",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px"
+    },
+    {
+      "id": "--g-ambient",
+      "label": "Ambient field",
+      "group": "Glass",
+      "type": "number",
+      "default": 0.9,
+      "min": 0,
+      "max": 1.5,
+      "step": 0.05
+    },
+    {
+      "id": "--g-ambient-spread",
+      "label": "Ambient spread",
+      "group": "Glass",
+      "type": "length",
+      "default": "88%",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "note": "lower = tighter shapes = more structure for the refraction to bend"
+    },
+    {
+      "id": "--g-noise",
+      "label": "Grain",
+      "group": "Glass",
+      "type": "number",
+      "default": 0.035,
+      "min": 0,
+      "max": 0.2,
+      "step": 0.005
+    },
+    {
+      "id": "--g-hover-scale",
+      "label": "Hover scale",
+      "group": "Glass",
+      "type": "number",
+      "default": 1.01,
+      "min": 1,
+      "max": 1.08,
+      "step": 0.005
+    },
+    {
+      "id": "--rx-totop-size",
+      "label": "Back-to-top size",
+      "group": "Space",
+      "type": "length",
+      "default": "3rem",
+      "min": 2,
+      "max": 5,
+      "step": 0.125,
+      "unit": "rem"
+    },
+    {
+      "id": "--g-tint-modal",
+      "label": "Glass tint · modal",
+      "group": "Glass",
+      "type": "length",
+      "default": "96%",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "id": "--card-scrim-top",
+      "label": "Card scrim top",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.58,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--card-scrim-mid",
+      "label": "Card scrim middle",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.16,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--card-scrim-bottom",
+      "label": "Card scrim bottom",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.82,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--card-photo-y",
+      "label": "Card photo focus Y",
+      "group": "Photo",
+      "type": "length",
+      "default": "50%",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "id": "--card-photo-sat",
+      "label": "Card photo saturation",
+      "group": "Photo",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 2,
+      "step": 0.05
+    },
+    {
+      "id": "--card-photo-contrast",
+      "label": "Card photo contrast",
+      "group": "Photo",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.02
+    },
+    {
+      "id": "--card-scrim-top-sm",
+      "label": "Card scrim top · mobile",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.6,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--card-scrim-mid-sm",
+      "label": "Card scrim middle · mobile",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.48,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--card-scrim-bottom-sm",
+      "label": "Card scrim bottom · mobile",
+      "group": "Photo",
+      "type": "number",
+      "default": 0.78,
+      "min": 0,
+      "max": 1,
+      "step": 0.02
+    },
+    {
+      "id": "--rx-footer-chips-lift",
+      "label": "Footer chips lift",
+      "group": "Space",
+      "type": "length",
+      "default": "7rem",
+      "min": 0,
+      "max": 20,
+      "step": 0.5,
+      "unit": "rem"
+    },
+    {
+      "id": "--rx-footer-chips-scale",
+      "label": "Footer chips scale",
+      "group": "Space",
+      "type": "number",
+      "default": 1.2,
+      "min": 0.8,
+      "max": 2,
+      "step": 0.05
+    },
+    {
+      "id": "--rx-footer-chips-right",
+      "label": "Footer chips inset",
+      "group": "Space",
+      "type": "length",
+      "default": "5.5rem",
+      "min": 0,
+      "max": 16,
+      "step": 0.5,
+      "unit": "rem"
+    }
+  ]
+}

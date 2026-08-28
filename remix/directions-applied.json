@@ -1,0 +1,47 @@
+[
+  {
+    "rx": "house-calm",
+    "ground": "rgb(241, 241, 241)",
+    "accent": "#f3ec9e",
+    "displayFont": "\"DM Sans\"",
+    "heroSize": "144px",
+    "cardBg": "rgb(198, 203, 222)",
+    "boxRadius": "24px",
+    "boxBorder": "0px",
+    "revealDur": "1000ms",
+    "rootPx": "16px",
+    "scrollH": 7304,
+    "slug": "house-calm",
+    "errors": 0
+  },
+  {
+    "rx": "vitruvian",
+    "ground": "rgb(221, 208, 180)",
+    "accent": "#a63c22",
+    "displayFont": "\"Cormorant Garamond\"",
+    "heroSize": "152.64px",
+    "cardBg": "rgb(140, 154, 166)",
+    "boxRadius": "2.9376px",
+    "boxBorder": "1px",
+    "revealDur": "1400ms",
+    "rootPx": "16.32px",
+    "scrollH": 7395,
+    "slug": "vitruvian",
+    "errors": 0
+  },
+  {
+    "rx": "greenhouse",
+    "ground": "rgb(225, 244, 223)",
+    "accent": "#b1dbb8",
+    "displayFont": "\"Playfair Display\"",
+    "heroSize": "135.36px",
+    "cardBg": "rgb(207, 231, 211)",
+    "boxRadius": "13.3632px",
+    "boxBorder": "0px",
+    "revealDur": "760ms",
+    "rootPx": "15.36px",
+    "scrollH": 7042,
+    "slug": "greenhouse",
+    "errors": 0
+  }
+]

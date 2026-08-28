@@ -1,0 +1,16 @@
+{
+  "name": "re-active-hub",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5178 --strictPort",
+    "build": "vite build && node ../tools/postbuild.mjs",
+    "preview": "vite preview --port 5178 --strictPort",
+    "directions": "node ../tools/build-directions.mjs && node ../tools/build-fontlink.mjs && node ../tools/inline-loader.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.1.5"
+  },
+  "description": "Re-Active Hub — physiotherapy clinic, Gangtok. Remixed from a verified clone."
+}

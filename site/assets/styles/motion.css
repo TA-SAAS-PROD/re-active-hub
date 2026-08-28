@@ -1,0 +1,194 @@
+/* ==================================================================
+   Motion — every value here was read out of the live Webflow IX2 store
+   (Webflow.require('ix2').store.getState().ixData), not estimated.
+   Source action lists are named in the comments.
+   ================================================================== */
+
+:root {
+  /* Webflow easing curves, as their cubic-bezier equivalents */
+  --ease-out-expo:  cubic-bezier(.16, 1, .3, 1);
+  --ease-out-circ:  cubic-bezier(0, .55, .45, 1);
+  --ease-out-quart: cubic-bezier(.25, 1, .5, 1);
+  --ease-out-quad:  cubic-bezier(.5, 1, .89, 1);
+}
+
+/* ------------------------------------------------------------------
+   Reveal "a" — View · 0.1s   (SCROLL_INTO_VIEW, scrollOffset 10%)
+     from: opacity 0, blur(30px)
+     to:   opacity 1, blur(0)   1000ms, delay 100ms, outExpo
+   Reveal "a-4" — View · 0.2s: identical but delay 200ms.
+   Reveal "a-26" — Opacity · 0.1s: opacity only, 700ms delay 100ms outQuart.
+   ------------------------------------------------------------------ */
+[data-reveal],
+[data-reveal-blur] {
+  opacity: 0;
+  filter: blur(var(--rx-reveal-blur, 30px));
+  will-change: opacity, filter;
+}
+[data-reveal].is-in,
+[data-reveal-blur].is-in {
+  opacity: 1;
+  filter: blur(0px);
+  transition:
+    opacity var(--rx-reveal-dur, 1000ms) var(--rx-reveal-ease, var(--ease-out-expo)) var(--rx-reveal-delay, 100ms),
+    filter  var(--rx-reveal-dur, 1000ms) var(--rx-reveal-ease, var(--ease-out-expo)) var(--rx-reveal-delay, 100ms);
+}
+[data-reveal-blur] { filter: blur(var(--rx-reveal-blur, 30px)); }
+
+/* Cards use the opacity-only variant (a-26) — no blur on large surfaces. */
+[data-reveal-card] {
+  opacity: 0;
+  will-change: opacity;
+}
+[data-reveal-card].is-in {
+  opacity: 1;
+  transition: opacity var(--rx-card-dur, 700ms) var(--rx-card-ease, var(--ease-out-quart)) var(--rx-reveal-delay, 100ms);
+}
+
+/* a-62 "Rotate Img two" — rotate 0 -> 120deg, 1500ms outQuad, on view */
+[data-rotate-in] { transform: rotate(0deg); }
+[data-rotate-in].is-in {
+  transform: rotate(120deg);
+  transition: transform 1500ms var(--ease-out-quad);
+}
+/* .cta_img / .cases_img carry rotate(120deg) as their resting style in the
+   original CSS; the reveal drives them there from 0. */
+
+/* ------------------------------------------------------------------
+   Page load — action list a-66 "Home Hero One" (PAGE_START)
+   Letters: from translateX(150%) blur(40px) opacity 0
+            to   translateX(0)    blur(0)    opacity 1
+            transform+filter 500ms outCirc, opacity 100ms outCirc
+            stagger 0/100/200/300/400/500/600ms  (--i on each span)
+   ------------------------------------------------------------------ */
+.hero_title span {
+  opacity: 0;
+  filter: blur(var(--rx-letter-blur, 40px));
+  transform: translateX(var(--rx-letter-travel, 150%));
+  will-change: transform, opacity, filter;
+}
+[data-loaded] .hero_title span {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateX(0);
+  transition:
+    transform 500ms var(--ease-out-circ) calc(var(--i) * var(--rx-letter-stagger, 100ms)),
+    filter    500ms var(--ease-out-circ) calc(var(--i) * var(--rx-letter-stagger, 100ms)),
+    opacity   100ms var(--ease-out-circ) calc(var(--i) * var(--rx-letter-stagger, 100ms));
+}
+
+/* the pill — opacity 0->1, 1000ms delay 600ms outCirc */
+[data-load="hero-tag"] { opacity: 0; }
+[data-loaded] [data-load="hero-tag"] {
+  opacity: 1;
+  transition: opacity 1000ms var(--ease-out-circ) 600ms;
+}
+
+/* The second word rides the same stagger as the letters, one slot later, so
+   "Recovery" lands after the last letter of the wordmark rather than with it. */
+.hero_title.is-home-two.is-second {
+  opacity: 0;
+  filter: blur(var(--rx-letter-blur, 40px));
+  transform: translateX(var(--rx-letter-travel, 150%));
+}
+[data-loaded] .hero_title.is-home-two.is-second {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateX(0);
+  transition:
+    transform 500ms var(--ease-out-circ) calc(9 * var(--rx-letter-stagger, 100ms)),
+    filter    500ms var(--ease-out-circ) calc(9 * var(--rx-letter-stagger, 100ms)),
+    opacity   100ms var(--ease-out-circ) calc(9 * var(--rx-letter-stagger, 100ms));
+}
+
+/* The hero panel itself fades up. The home-3 hero ramped a background COLOUR
+   between two plate tones; this panel carries the photograph, so it fades
+   instead — a colour ramp under an image is invisible. */
+[data-load="hero-box"] { opacity: 0; }
+[data-loaded] [data-load="hero-box"] {
+  opacity: 1;
+  transition: opacity 900ms var(--ease-out-circ) 0ms;
+}
+
+/* the wordmark row and the bottom row */
+[data-load="hero-title"] { opacity: 0; }
+[data-loaded] [data-load="hero-title"] {
+  opacity: 1;
+  transition: opacity 700ms var(--ease-out-circ) 100ms;
+}
+
+[data-load="hero-cta"] { opacity: 0; }
+[data-loaded] [data-load="hero-cta"] {
+  opacity: 1;
+  transition: opacity 1000ms var(--ease-out-circ) 1000ms;
+}
+
+/* navbar last */
+[data-load="navbar"] { opacity: 0; }
+[data-loaded] [data-load="navbar"] {
+  opacity: 1;
+  transition: opacity 1000ms var(--ease-out-circ) 1200ms;
+}
+
+/* ------------------------------------------------------------------
+   Marquee — action list a-45 "Loop specialties" (PAGE_START, loop: true)
+     TRANSFORM_MOVE x: 0 -> -33.7% over 40000ms, then reset to 0.
+   Three copies of the label group make -33.7% land on an identical frame.
+   ------------------------------------------------------------------ */
+@keyframes loop-specialties {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.7%); }
+}
+.main_loop.is-specialties {
+  animation: loop-specialties var(--rx-marquee-dur, 40000ms) linear infinite;
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------------
+   Button hover — a-20 (over) / a-58 (out), 250ms outQuad
+     .button-text.is-firts   y:  0%  -> -150%
+     .button-text.is-second  y: 50%  -> -100%
+     .button-icon            x:  0%  ->   25%
+   ------------------------------------------------------------------ */
+.button-text.is-firts  { transform: translateY(0); }
+.button-text.is-second { transform: translateY(50%); }
+.button-icon           { transform: translateX(0); }
+.button-text, .button-icon {
+  transition: transform var(--rx-hover-dur, 250ms) var(--ease-out-quad);
+}
+.button:hover .button-text.is-firts  { transform: translateY(-150%); }
+.button:hover .button-text.is-second { transform: translateY(-100%); }
+.button:hover .button-icon           { transform: translateX(25%); }
+
+/* ------------------------------------------------------------------
+   Expertise card hover — a-59 (on) / a-60 (off), 250ms
+     .icon-1x1-medium.is-firts   0,0      -> 210%,-150%
+     .icon-1x1-medium.is-second  -230%,50% ->   0%,-100%
+     card filter saturate(100%) -> saturate(130%)   (outQuart)
+   ------------------------------------------------------------------ */
+.icon-1x1-medium.is-firts  { transform: translate(0, 0); }
+.icon-1x1-medium.is-second { transform: translate(-230%, 50%); }
+.icon-1x1-medium {
+  transition: transform var(--rx-hover-dur, 250ms) var(--ease-out-quad);
+}
+.expertise_card { filter: saturate(100%); transition: filter 250ms var(--ease-out-quart); }
+.expertise_card:hover { filter: saturate(130%); }
+.expertise_card:hover .icon-1x1-medium.is-firts  { transform: translate(210%, -150%); }
+.expertise_card:hover .icon-1x1-medium.is-second { transform: translate(0, -100%); }
+
+/* ------------------------------------------------------------------
+   Respect the user's motion preference. The original does not, but a
+   clone that ships motion should — everything lands at its end state.
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal], [data-reveal-blur], [data-reveal-card],
+  [data-load], .hero_title span {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  [data-rotate-in] { transform: rotate(120deg) !important; transition: none !important; }
+  .main_loop.is-specialties { animation: none; }
+  .button-text, .button-icon, .icon-1x1-medium { transition: none; }
+}

@@ -1,0 +1,21 @@
+import { launch, sleep } from './cdp.mjs';
+import { writeFileSync, mkdirSync } from 'node:fs';
+const OUT='C:/Users/prakash.c/cs-assessment/output/genovas-template.webflow.io/remix/ref';
+mkdirSync(OUT,{recursive:true});
+const URL=process.argv[2];
+const b=await launch(); const p=await b.newPage(); await p.init();
+await p.setViewport(1440,900,1);
+await p.goto(URL,{waitMs:6000});
+await p.scrollThrough(700,250);
+await sleep(1500);
+console.log('title:', await p.eval('document.title'));
+console.log('url:', await p.eval('location.href'));
+// find the live-preview iframe or the template preview link
+const links = await p.eval(`JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href).filter(h=>/webflow\.io|preview/i.test(h)).slice(0,12))`);
+console.log('preview links:', links);
+const iframes = await p.eval(`JSON.stringify([...document.querySelectorAll('iframe')].map(f=>f.src).slice(0,8))`);
+console.log('iframes:', iframes);
+const png=await p.screenshot({fullPage:false});
+writeFileSync(OUT+'/ref-top.png',png);
+console.log('shot bytes',png.length,'errors',p.pageErrors.length);
+await b.close();

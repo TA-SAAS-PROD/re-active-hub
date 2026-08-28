@@ -1,0 +1,35 @@
+{
+ "active": "vitruvian",
+ "directions": {
+  "house-calm": {
+   "name": "house-calm",
+   "thesis": "The cloned site's own restraint, kept: cool slate and pale citrine on soft grey, white panels floating with a generous 24px corner.",
+   "amplitude": "medium",
+   "tokens": "./tokens.house-calm.css",
+   "motion": "./motion.house-calm.js",
+   "patchCss": null,
+   "patchJs": null,
+   "assets": {}
+  },
+  "greenhouse": {
+   "name": "greenhouse",
+   "thesis": "Clinical-botanical: a warm cream canvas layered with sage and keylime panels, one deep forest ink carrying every heading and every action. Shadowless — depth comes from tinted layers, not elevation.",
+   "amplitude": "medium",
+   "tokens": "./tokens.greenhouse.css",
+   "motion": "./motion.greenhouse.js",
+   "patchCss": "./patch.greenhouse.css",
+   "patchJs": null,
+   "assets": {}
+  },
+  "vitruvian": {
+   "name": "vitruvian",
+   "thesis": "The body as a drawing. Aged parchment, red-chalk sanguine and sepia ink, squared-off plates with ruled edges — a Renaissance anatomical study rather than a clinic brochure.",
+   "amplitude": "medium",
+   "tokens": "./tokens.vitruvian.css",
+   "motion": "./motion.vitruvian.js",
+   "patchCss": "./patch.vitruvian.css",
+   "patchJs": null,
+   "assets": {}
+  }
+ }
+}

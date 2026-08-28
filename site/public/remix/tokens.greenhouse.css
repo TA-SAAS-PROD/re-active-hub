@@ -1,0 +1,33 @@
+/* direction: greenhouse — Clinical-botanical: a warm cream canvas layered with sage and keylime panels, one deep forest ink carrying every heading and every action. Shadowless — depth comes from tinted layers, not elevation. */
+:root[data-rx="greenhouse"] {
+  --rx-ground: #e1f4df;
+  --rx-panel: #fffefc;
+  --rx-ink: #0f3e17;
+  --rx-ink-2: #222222;
+  --rx-ink-3: #0c2f10;
+  --rx-accent: #b1dbb8;
+  --rx-accent-2: #cfe7d3;
+  --rx-slate: #0f3e17;
+  --rx-solid: #0f3e17;
+  --rx-tint-1: #cfe7d3;
+  --rx-tint-2: #e1f4df;
+  --rx-neutral: #b6ced5;
+  --rx-rule: #efeeeb;
+  --rx-font-display: "Playfair Display", Georgia, serif;
+  --rx-font-body: "DM Sans", system-ui, sans-serif;
+  --rx-heading-weight: 400;
+  --rx-display-scale: 0.94;
+  --rx-root-scale: 0.96;
+  --rx-radius-scale: 0.58;
+  --rx-reveal-dur: 760ms;
+  --rx-reveal-delay: 80ms;
+  --rx-reveal-blur: 10px;
+  --rx-reveal-ease: cubic-bezier(.25, 1, .5, 1);
+  --rx-card-dur: 560ms;
+  --rx-letter-stagger: 70ms;
+  --rx-letter-travel: 90%;
+  --rx-letter-blur: 18px;
+  --rx-marquee-dur: 34000ms;
+  --rx-hover-dur: 200ms;
+  --rx-color-text: #0f3e17;
+}
